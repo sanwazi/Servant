@@ -45,6 +45,7 @@
         android:id="@+id/btn_confirm_dialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/btn_confirm_detaildialog"/>
+        android:layout_gravity="center"
+        android:text="@string/btn_confirm_detaildialog" />
 
 </LinearLayout>

@@ -1,40 +1,41 @@
-package com.example.tek.first.servant.todolist;
+package com.example.tek.first.servant.todolist.activity;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.example.tek.first.servant.R;
+import com.example.tek.first.servant.todolist.fragment.DetailedToDoListItemDialog;
 
 public class ToDoListMainActivity extends Activity {
 
-    private ImageButton btnConfirm;
+    private ImageButton btnDetailedToDoListItem;
     private EditText editTextInput;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_to_do_list);
-        btnConfirm = (ImageButton) findViewById(R.id.todoitemconfirm_btn_activitytodolist);
+        btnDetailedToDoListItem = (ImageButton) findViewById(R.id.todoitemconfirm_btn_activitytodolist);
         editTextInput = (EditText) findViewById(R.id.todoiteminput_edittext_activitytodolist);
 
-        btnConfirm.setOnClickListener(new View.OnClickListener() {
+        btnDetailedToDoListItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+//                DetailedToDoListItemDialog detailedToDoListItemDialog = new DetailedToDoListItemDialog();
+//                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+//                fragmentTransaction.replace();
+                DetailedToDoListItemDialog detailedToDoListItemDialog = new DetailedToDoListItemDialog();
+                detailedToDoListItemDialog.show(getFragmentManager(), "DetailedToDoListItemDialog");
             }
         });
-    }
-
-    private void createToDoListItemDetail() {
-        Dialog dialog = new Dialog(this);
-
     }
 
     @Override
