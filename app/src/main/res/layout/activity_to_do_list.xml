@@ -4,23 +4,24 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
         <EditText
             android:id="@+id/todoiteminput_edittext_activitytodolist"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="@string/todoiteminput_edittext_activitytodolist_text" />
 
         <ImageButton
             android:id="@+id/todoitemconfirm_btn_activitytodolist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/file_add" />
-    </LinearLayout>
+            android:layout_width="60sp"
+            android:layout_height="60sp"
+            android:layout_toRightOf="@+id/todoiteminput_edittext_activitytodolist"
+            android:src="@mipmap/todoitem_confirm_btn_image" />
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/displaytodoitems_listview_activitytodolist"

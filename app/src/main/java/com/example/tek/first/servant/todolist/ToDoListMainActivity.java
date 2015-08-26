@@ -7,7 +7,7 @@ import android.view.MenuItem;
 
 import com.example.tek.first.servant.R;
 
-public class ToDoListActivity extends Activity {
+public class ToDoListMainActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
