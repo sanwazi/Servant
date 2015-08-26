@@ -25,8 +25,6 @@ public class TimePickerDialogFragment extends DialogFragment implements TimePick
     private int hour;
     private int minute;
 
-    private Handler timerPickerHandler;
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         bundle = getArguments();
@@ -38,7 +36,6 @@ public class TimePickerDialogFragment extends DialogFragment implements TimePick
             hour = calendar.get(Calendar.HOUR_OF_DAY);
             minute = calendar.get(Calendar.MINUTE);
         }
-        timerPickerHandler = new Handler();
         Log.v(LOG_TAG, "onCreateDialog() method, TimePickerDialogFragment executed");
 
         return new TimePickerDialog(getActivity(), this, hour, minute, DateFormat.is24HourFormat(getActivity()));
@@ -47,11 +44,10 @@ public class TimePickerDialogFragment extends DialogFragment implements TimePick
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
-        hour = hourOfDay;
-        this.minute = minute;
-
-        timeModel = new TimeModel(hour, minute);
+        timeModel = new TimeModel(hourOfDay, minute);
         Log.v(LOG_TAG, "onTimeSet() method executed");
+        Log.v(LOG_TAG, "hourOfDay, onTimeSet(): " + hourOfDay);
+        Log.v(LOG_TAG, "minute, onTimeSet(): " + minute);
 
         Bundle timeSetBundle = new Bundle();
 
@@ -60,6 +56,5 @@ public class TimePickerDialogFragment extends DialogFragment implements TimePick
         Message message = new Message();
         message.setData(timeSetBundle);
 
-        timerPickerHandler.sendMessage(message);
     }
 }

@@ -17,8 +17,13 @@ import android.widget.Toast;
 import com.example.tek.first.servant.R;
 import com.example.tek.first.servant.todolist.activity.ToDoListMainActivity;
 import com.example.tek.first.servant.todolist.helper.CommonConstants;
+import com.example.tek.first.servant.todolist.helper.DatabaseHelper;
 import com.example.tek.first.servant.todolist.model.DateModel;
 import com.example.tek.first.servant.todolist.model.TimeModel;
+import com.example.tek.first.servant.todolist.model.ToDoListItemModel;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class DetailedToDoListItemDialog extends DialogFragment {
 
@@ -29,9 +34,16 @@ public class DetailedToDoListItemDialog extends DialogFragment {
     private Button btnTimePicker;
     private Button btnConfirm;
 
+    private String descriptionText;
+    private Long currentTimeStamp;
+    private Long itemDateAndTimeSet;
+    private int priority;
+    private int category;
+
     private Bundle bundle;
     private TimeModel timeSet;
     private DateModel dateSet;
+    private DatabaseHelper dbHelper;
 
     private int timePickerHour = 12;
     private int timePickerMin = 0;
@@ -43,19 +55,14 @@ public class DetailedToDoListItemDialog extends DialogFragment {
         editTextTitle = (EditText) rootView.findViewById(R.id.edittext_title_todolistitem);
         editTextDescription = (EditText) rootView.findViewById(R.id.edittext_description_todolistitem);
 
+        dbHelper = new DatabaseHelper(getActivity());
+
         spinnerPriority = (Spinner) rootView.findViewById(R.id.spinner_priority_todolistitem);
         btnTimePicker = (Button) rootView.findViewById(R.id.todolist_btn_selecttime);
         btnDatePicker = (Button) rootView.findViewById(R.id.todolist_btn_selectdate);
         btnConfirm = (Button) rootView.findViewById(R.id.btn_confirm_dialog);
 
-        Handler handler = new Handler() {
-            public void handleMsssage(Message message) {
-                bundle = message.getData();
-                timeSet = bundle.getParcelable(CommonConstants.TIME_SET_IDENTIFIER);
-            }
-        };
-
-        btnTimePicker.setText(timeSet.getHour() + ": " + timeSet.getMinute());
+//        btnTimePicker.setText(timeSet.getHour() + ": " + timeSet.getMinute());
 
         btnTimePicker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,10 +85,19 @@ public class DetailedToDoListItemDialog extends DialogFragment {
             public void onClick(View v) {
                 String titleText = editTextTitle.getText().toString();
                 if (titleText != null) {
-                    String descriptionText = editTextDescription.getText().toString();
-                    Intent detailedInfoIntent = new Intent(getActivity(), ToDoListMainActivity.class);
-                    detailedInfoIntent.putExtra(CommonConstants.DESCRIPTION_IDENTIFIER, descriptionText);
-                    startActivity(detailedInfoIntent);
+                    descriptionText = editTextDescription.getText().toString();
+                    currentTimeStamp =
+                            Long.parseLong(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
+                    // todo: get all data info
+                    priority = 0;
+                    itemDateAndTimeSet = 0L;
+                    category = 0;
+
+                    ToDoListItemModel toDoListItem = new ToDoListItemModel(titleText, priority, descriptionText, currentTimeStamp, itemDateAndTimeSet, category);
+                    dbHelper.insertToDoListItem(toDoListItem);
+//                    Intent detailedInfoIntent = new Intent(getActivity(), ToDoListMainActivity.class);
+//                    detailedInfoIntent.putExtra(CommonConstants.TODOLISTITEM_IDENTIFIER, toDoListItem);
+//                    startActivity(detailedInfoIntent);
                 } else {
                     Toast.makeText(getActivity(), "Please input a title", Toast.LENGTH_SHORT).show();
                 }
