@@ -1,6 +1,5 @@
 package com.example.tek.first.servant.todolist.model;
 
-
 import java.util.Date;
 
 public class ToDoItemModel {
