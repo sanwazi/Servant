@@ -9,6 +9,8 @@
     <string name="todolist_ben_selecttime_text">Pick Time</string>
     <string name="todolist_ben_selectdate_text">Pick Date</string>
     <string name="todolistitem_title">Title</string>
+    <string name="btn_confirm_detaildialog">Add</string>
     <string name="todolistitem_description">Description</string>
+    <string name="todolist_confirm_text">Confirm</string>
     <string name="todoiteminput_edittext_activitytodolist_text">Please input a new todo item</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.tek.first.servant.todolist;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,7 +32,8 @@ public class ToDoListMainActivity extends Activity {
         });
     }
 
-    private void createToDoListItemDetail(){
+    private void createToDoListItemDetail() {
+        Dialog dialog = new Dialog(this);
 
     }
 

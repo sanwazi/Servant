@@ -41,4 +41,10 @@
         android:layout_height="wrap_content"
         android:hint="@string/todolistitem_description" />
 
+    <Button
+        android:id="@+id/btn_confirm_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_confirm_detaildialog"/>
+
 </LinearLayout>
