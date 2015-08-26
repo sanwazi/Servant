@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Servant</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+
+    <!-- string for todolist Activity-->
+    <string name="sort_by_title">Sort by Title</string>
+    <string name="sort_by_added_time">Sort by Added Time</string>
+    <string name="sort_by_notification_time">Sort by Notification Time</string>
     <string name="todoiteminput_edittext_activitytodolist_text">Please input todo item title</string>
 </resources>
