@@ -12,7 +12,7 @@ public class GeneralHelper {
 
     public static Long dateAndTimeFormattedToLong(DateModel date, TimeModel time) {
         if (date != null && time != null)
-            return Long.parseLong(date.formatToString() + time.formatToString());
+            return Long.parseLong(date.formatDateToString() + time.formatTimeToString());
         else {
             Log.e(LOG_TAG, "Date or time might be null");
             return 0L;
@@ -79,5 +79,20 @@ public class GeneralHelper {
                 return CompletionStatus.COMPLETED;
         }
         return CompletionStatus.NOTSTARTED;
+    }
+
+    public static String formatString(String text) {
+        if (text == null || text.length() == 0) {
+            return "";
+        } else
+            return text;
+    }
+
+    public static String formatString(Long text) {
+        return text.toString();
+    }
+
+    public static String formatString(int text) {
+        return Integer.toString(text);
     }
 }

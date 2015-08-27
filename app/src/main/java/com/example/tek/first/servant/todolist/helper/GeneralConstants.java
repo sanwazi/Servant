@@ -1,8 +1,5 @@
 package com.example.tek.first.servant.todolist.helper;
 
-/**
- * Created by Leon on 8/26/2015.
- */
 public abstract class GeneralConstants {
 
     public static final String DESCRIPTION_IDENTIFIER = "descriptionIdentifier";
@@ -22,4 +19,5 @@ public abstract class GeneralConstants {
     public static final int TODOLISTITEM_STATUS_COMPLETE = 2;
 
     public static final String TO_DO_ITEM_IDENTIFIER = "toDoItemIdentifier";
+    public static final String SAVEINSTANCESTATE_TODOITEMS_ARRAYLIST_IDENTIFIER = "toDoItemIdentifier";
 }

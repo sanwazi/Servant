@@ -59,17 +59,14 @@ public class TimeModel implements Parcelable {
 
     @Override
     public String toString() {
-        return "TimeModel{" +
-                "hour=" + hour +
-                ", minute=" + minute +
-                '}';
+        return hour + ":" + minute;
     }
 
-    public String formatToString() {
-        return Integer.toString(hour) + Integer.toString(minute);
+    public String formatTimeToString() {
+        return String.format("%02d", hour) + String.format("%02d", minute);
     }
 
     public Long formatToLong() {
-        return Long.parseLong(formatToString());
+        return Long.parseLong(formatTimeToString());
     }
 }

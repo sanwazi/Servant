@@ -1,4 +1,4 @@
-package com.example.tek.first.servant.todolist.fragment;
+package com.example.tek.first.servant.todolist.fragment.dialog;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;

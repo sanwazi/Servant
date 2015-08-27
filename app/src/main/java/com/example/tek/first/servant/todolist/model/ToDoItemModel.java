@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.example.tek.first.servant.todolist.helper.GeneralConstants;
+import com.example.tek.first.servant.todolist.helper.GeneralHelper;
 import com.example.tek.first.servant.todolist.helper.GeneralHelper.CompletionStatus;
 
 public class ToDoItemModel implements Parcelable {
@@ -23,6 +25,26 @@ public class ToDoItemModel implements Parcelable {
         this.priority = 1;
         this.detailDescription = null;
         this.itemCreatedDateAndTime = 0L;
+        this.toDoItemDeadline = 0L;
+        this.category = 0;
+        this.completionStatus = CompletionStatus.NOTSTARTED;
+    }
+
+    public ToDoItemModel(String title) {
+        this.title = title;
+        this.priority = 1;
+        this.detailDescription = null;
+        this.itemCreatedDateAndTime = 0L;
+        this.toDoItemDeadline = 0L;
+        this.category = 0;
+        this.completionStatus = CompletionStatus.NOTSTARTED;
+    }
+
+    public ToDoItemModel(String title, Long currentTime) {
+        this.title = title;
+        this.priority = 1;
+        this.detailDescription = null;
+        this.itemCreatedDateAndTime = currentTime;
         this.toDoItemDeadline = 0L;
         this.category = 0;
         this.completionStatus = CompletionStatus.NOTSTARTED;
@@ -119,7 +141,6 @@ public class ToDoItemModel implements Parcelable {
     }
 
     public String getTitle() {
-
         return title;
     }
 
@@ -158,7 +179,7 @@ public class ToDoItemModel implements Parcelable {
         itemCreatedDateAndTime = in.readLong();
         toDoItemDeadline = in.readLong();
         category = in.readInt();
-        completionStatus = in.readParcelable(CompletionStatus.class.getClassLoader());
+        completionStatus = (CompletionStatus) in.readValue(CompletionStatus.class.getClassLoader());
     }
 
     public static final Creator<ToDoItemModel> CREATOR = new Creator<ToDoItemModel>() {

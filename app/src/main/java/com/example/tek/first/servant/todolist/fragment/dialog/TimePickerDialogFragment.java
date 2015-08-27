@@ -1,11 +1,10 @@
-package com.example.tek.first.servant.todolist.fragment;
+package com.example.tek.first.servant.todolist.fragment.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.os.Message;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.TimePicker;

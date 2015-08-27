@@ -3,17 +3,19 @@ package com.example.tek.first.servant.todolist.activity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.app.FragmentManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.tek.first.servant.R;
-import com.example.tek.first.servant.todolist.fragment.DatePickerDialogFragment;
-import com.example.tek.first.servant.todolist.fragment.DetailedNewToDoItemDialogFragment;
+import com.example.tek.first.servant.todolist.fragment.dialog.DatePickerDialogFragment;
+import com.example.tek.first.servant.todolist.fragment.dialog.DetailedNewToDoItemDialogFragment;
 import com.example.tek.first.servant.todolist.fragment.NewItemAddedFragment;
-import com.example.tek.first.servant.todolist.fragment.TimePickerDialogFragment;
+import com.example.tek.first.servant.todolist.fragment.dialog.TimePickerDialogFragment;
 import com.example.tek.first.servant.todolist.fragment.ToDoListDisplayFragment;
 import com.example.tek.first.servant.todolist.helper.DatabaseHelper;
+import com.example.tek.first.servant.todolist.helper.GeneralConstants;
 import com.example.tek.first.servant.todolist.helper.GeneralHelper;
 import com.example.tek.first.servant.todolist.model.DateModel;
 import com.example.tek.first.servant.todolist.model.TimeModel;
@@ -25,7 +27,8 @@ import java.util.ArrayList;
 public class ToDoListMainActivity extends Activity
         implements DatePickerDialogFragment.DatePickerDialogListener,
         TimePickerDialogFragment.TimePickerDialogListener,
-        DetailedNewToDoItemDialogFragment.OnNewItemAddedListener {
+        DetailedNewToDoItemDialogFragment.OnNewItemAddedListener,
+        NewItemAddedFragment.OnNewSimpleItemAddedListener {
 
     public static String LOG_TAG = ToDoListMainActivity.class.getSimpleName();
 
@@ -43,13 +46,18 @@ public class ToDoListMainActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todolist);
 
-        dbHelper = new DatabaseHelper(ToDoListMainActivity.this);
+        toDoItemsArrayList = new ArrayList<>();
+        if (savedInstanceState != null) {
+            toDoItemsArrayList = savedInstanceState.getParcelableArrayList(GeneralConstants.SAVEINSTANCESTATE_TODOITEMS_ARRAYLIST_IDENTIFIER);
+        } else {
+            dbHelper = new DatabaseHelper(ToDoListMainActivity.this);
+            toDoItemsArrayList = dbHelper.getAllToDoItemsAsArrayList();
+        }
 
         FragmentManager fragmentManager = getFragmentManager();
         NewItemAddedFragment newItemAddedFragment =
                 (NewItemAddedFragment) fragmentManager.findFragmentById(R.id.todolist_newitem);
 
-        toDoItemsArrayList = new ArrayList<>();
         ToDoListDisplayFragment toDoListDisplayFragment
                 = (ToDoListDisplayFragment) fragmentManager.findFragmentById(R.id.todolist_displayfragment);
 
@@ -67,6 +75,13 @@ public class ToDoListMainActivity extends Activity
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(
+                GeneralConstants.SAVEINSTANCESTATE_TODOITEMS_ARRAYLIST_IDENTIFIER, toDoItemsArrayList);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
     }
@@ -74,22 +89,30 @@ public class ToDoListMainActivity extends Activity
     @Override
     public void onDateSelected(DateModel dateSelected) {
         this.dateSelected = dateSelected;
-        Toast.makeText(ToDoListMainActivity.this, "Date Selected", Toast.LENGTH_SHORT).show();
+        Toast.makeText(ToDoListMainActivity.this, "Date set: " + dateSelected.toString(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onTimeSelected(TimeModel timeSelected) {
         this.timeSelected = timeSelected;
-        Toast.makeText(ToDoListMainActivity.this, "Time Selected", Toast.LENGTH_SHORT).show();
+        Toast.makeText(ToDoListMainActivity.this, "Time set: " + timeSelected.toString(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onNewItemAdded(ToDoItemModel toDoItem) {
-        Long itemDateAndTimeSet = GeneralHelper.dateAndTimeFormattedToLong(dateSelected, timeSelected);
-        toDoItem.setToDoItemDeadline(itemDateAndTimeSet);
-        this.toDoItem = toDoItem;
+        Long deadline = GeneralHelper.dateAndTimeFormattedToLong(dateSelected, timeSelected);
+        Log.v(LOG_TAG, "deadline, onNewItemAdded, ToDoListMainActivity: " + deadline);
+        toDoItem.setToDoItemDeadline(deadline);
+//        this.toDoItem = toDoItem;
         dbHelper.insertToDoListItem(toDoItem);
         toDoItemsArrayList.add(0, toDoItem);
+        toDoListCustomAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onNewSimpleItemAdded(ToDoItemModel newSimpleItem) {
+        dbHelper.insertToDoListItem(newSimpleItem);
+        toDoItemsArrayList.add(0, newSimpleItem);
         toDoListCustomAdapter.notifyDataSetChanged();
     }
 }

@@ -3,16 +3,13 @@ package com.example.tek.first.servant.todolist.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by Leon on 8/26/2015.
- */
 public class DateModel implements Parcelable {
     private int month;
     private int day;
     private int year;
 
     public DateModel(int month, int day, int year) {
-        this.month = month;
+        this.month = month + 1;
         this.day = day;
         this.year = year;
     }
@@ -74,18 +71,14 @@ public class DateModel implements Parcelable {
     @Override
     public String toString() {
 
-        return "DateModel{" +
-                "month=" + month +
-                ", day=" + day +
-                ", year=" + year +
-                '}';
+        return month + " " + day + ", " + year;
     }
 
-    public String formatToString() {
-        return Integer.toString(year) + Integer.toString(month) + Integer.toString(day);
+    public String formatDateToString() {
+        return Integer.toString(year) + String.format("%02d", month) + String.format("%02d", day);
     }
 
     public Long formatToLong() {
-        return Long.parseLong(formatToString());
+        return Long.parseLong(formatDateToString());
     }
 }

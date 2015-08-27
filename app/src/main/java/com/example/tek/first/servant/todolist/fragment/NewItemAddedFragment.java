@@ -1,8 +1,10 @@
 package com.example.tek.first.servant.todolist.fragment;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +12,32 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.example.tek.first.servant.R;
+import com.example.tek.first.servant.todolist.fragment.dialog.DetailedNewToDoItemDialogFragment;
+import com.example.tek.first.servant.todolist.model.ToDoItemModel;
 
-/**
- * Created by Leon on 8/27/2015.
- */
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class NewItemAddedFragment extends Fragment {
 
     private ImageButton btnDetailedToDoListItem;
     private EditText editTextInput;
+    private OnNewSimpleItemAddedListener onNewSimpleItemAddedListener;
+
+    public interface OnNewSimpleItemAddedListener {
+        void onNewSimpleItemAdded(ToDoItemModel newSimpleToDoItem);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        try {
+            onNewSimpleItemAddedListener = (OnNewSimpleItemAddedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnNewSimpleItemAddedListener.");
+        }
+    }
 
     @Nullable
     @Override
@@ -25,8 +45,6 @@ public class NewItemAddedFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.todolist_newitem, null);
 
         btnDetailedToDoListItem = (ImageButton) rootView.findViewById(R.id.todoitemconfirm_btn_activitytodolist);
-        editTextInput = (EditText) rootView.findViewById(R.id.todoiteminput_edittext_activitytodolist);
-
         btnDetailedToDoListItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -34,6 +52,25 @@ public class NewItemAddedFragment extends Fragment {
                 detailedToDoListItemDialog.show(getFragmentManager(), "DetailedNewToDoItemDialogFragment");
             }
         });
+
+        editTextInput = (EditText) rootView.findViewById(R.id.todoiteminput_edittext_activitytodolist);
+        editTextInput.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN)
+                    if ((keyCode == KeyEvent.KEYCODE_DPAD_CENTER) ||
+                            (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                        String newSimpleItemTitle = editTextInput.getText().toString();
+                        Long currentTime = Long.parseLong(new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime()));
+                        ToDoItemModel toDoItem = new ToDoItemModel(newSimpleItemTitle, currentTime);
+                        onNewSimpleItemAddedListener.onNewSimpleItemAdded(toDoItem);
+                        editTextInput.setText("");
+                        return true;
+                    }
+                return false;
+            }
+        });
+
         return rootView;
     }
 }
