@@ -70,4 +70,13 @@ public class DateModel implements Parcelable {
         dest.writeInt(Day);
         dest.writeInt(Year);
     }
+
+    @Override
+    public String toString() {
+        return "DateModel{" +
+                "Month=" + Month +
+                ", Day=" + Day +
+                ", Year=" + Year +
+                '}';
+    }
 }

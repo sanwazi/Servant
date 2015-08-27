@@ -3,12 +3,11 @@ package com.example.tek.first.servant.todolist.helper;
 /**
  * Created by Leon on 8/26/2015.
  */
-public class CommonConstants {
+public abstract class GeneralConstants {
 
     public static String DESCRIPTION_IDENTIFIER = "descriptionIdentifier";
     public static String TODOLISTITEM_IDENTIFIER = "toDoListItemIdentifier";
     public static String PRIORITY_IDENTIFIER = "priorityIdentifier";
-    public static String DATE_SET_IDENTIFIER = "dateIdentifier";
     public static String TIME_SET_IDENTIFIER = "timeIdentifier";
     public static String TIME_PICKED_IDENTIFIER = "timePickedIdentifier";
     public static String HOUR_IDENTIFIER = "hourIdentifier";

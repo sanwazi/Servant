@@ -5,6 +5,12 @@
     android:layout_gravity="center"
     android:orientation="vertical">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="0dp"
+        android:src="@mipmap/todolistitem_header" />
+
     <EditText
         android:id="@+id/edittext_title_todolistitem"
         android:layout_width="match_parent"
@@ -39,7 +45,12 @@
         android:id="@+id/edittext_description_todolistitem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/todolistitem_description" />
+        android:background="@drawable/todolistitemdescription"
+        android:hint="@string/todolistitem_description"
+        android:inputType="textMultiLine"
+        android:lines="8"
+        android:minLines="6"
+        android:scrollbars="vertical" />
 
     <Button
         android:id="@+id/btn_confirm_dialog"

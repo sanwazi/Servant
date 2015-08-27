@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by Leon on 8/26/2015.
  */
-public class TimeModel implements Parcelable{
+public class TimeModel implements Parcelable {
 
     private int hour;
     private int minute;
@@ -58,5 +58,13 @@ public class TimeModel implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(hour);
         dest.writeInt(minute);
+    }
+
+    @Override
+    public String toString() {
+        return "TimeModel{" +
+                "hour=" + hour +
+                ", minute=" + minute +
+                '}';
     }
 }
