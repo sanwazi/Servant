@@ -8,16 +8,16 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.tek.first.servant.R;
-import com.example.tek.first.servant.todolist.model.ToDoListItemModel;
+import com.example.tek.first.servant.todolist.model.ToDoItemModel;
 
 import java.util.ArrayList;
 
 public class ToDoListCustomAdapter extends BaseAdapter {
 
     private Context context;
-    private ArrayList<ToDoListItemModel> toDoListItemsArrayList;
+    private ArrayList<ToDoItemModel> toDoListItemsArrayList;
 
-    public ToDoListCustomAdapter(Context context, ArrayList<ToDoListItemModel> toDoListItemsArrayList) {
+    public ToDoListCustomAdapter(Context context, ArrayList<ToDoItemModel> toDoListItemsArrayList) {
         this.context = context;
         this.toDoListItemsArrayList = toDoListItemsArrayList;
     }
@@ -29,7 +29,7 @@ public class ToDoListCustomAdapter extends BaseAdapter {
     }
 
     @Override
-    public ToDoListItemModel getItem(int position) {
+    public ToDoItemModel getItem(int position) {
         return toDoListItemsArrayList.get(position);
     }
 
@@ -41,14 +41,17 @@ public class ToDoListCustomAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rootView = inflater.inflate(R.layout.to_do_list_item, null);
+        View rootView = inflater.inflate(R.layout.todoitem, null);
         TextView textViewPriority = (TextView) rootView.findViewById(R.id.todolist_row_priority);
         TextView textViewDeadline = (TextView) rootView.findViewById(R.id.todolist_row_deadline);
         TextView textViewTitle = (TextView) rootView.findViewById(R.id.todolist_row_title);
 
         textViewTitle.setText(toDoListItemsArrayList.get(position).getTitle());
-        textViewPriority.setText(toDoListItemsArrayList.get(position).getPriority());
-        textViewDeadline.setText(toDoListItemsArrayList.get(position).getItemDateAndTimeSet().toString());
+        textViewPriority.setText(Integer.toString(toDoListItemsArrayList.get(position).getPriority()));
+        Long deadline = toDoListItemsArrayList.get(position).getToDoItemDeadline();
+        if (deadline > 0L) {
+            textViewDeadline.setText(deadline.toString());
+        }
 
         return rootView;
     }

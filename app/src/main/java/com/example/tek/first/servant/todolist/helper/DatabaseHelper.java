@@ -3,13 +3,15 @@ package com.example.tek.first.servant.todolist.helper;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.tek.first.servant.todolist.model.ToDoListItemModel;
+import com.example.tek.first.servant.todolist.model.ToDoItemModel;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 /**
  * Created by Leon on 8/26/2015.
@@ -60,7 +62,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(upgradeTableQuery);
     }
 
-    public boolean insertToDoListItem(ToDoListItemModel toDoListItem) {
+    public boolean insertToDoListItem(ToDoItemModel toDoListItem) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -70,14 +72,69 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(TODOLIST_ITEM_TIME_DATE_CREATED, dateFormat.format(toDoListItem.getItemCreatedDateAndTime()));
         contentValues.put(TODOLIST_ITEM_DEADLINE, dateFormat.format(toDoListItem.getItemCreatedDateAndTime()));
         contentValues.put(TODOLIST_ITEM_CATEGORY, toDoListItem.getCategory());
-        contentValues.put(TODOLIST_ITEM_COMPLETE_STATUS, toDoListItem.getCompleteStatus());
+        contentValues.put(TODOLIST_ITEM_COMPLETE_STATUS, toDoListItem.getCompleteStatusCode());
         db.insert(TODOLIST_TABLE_NAME, null, contentValues);
         return true;
     }
 
 //    public boolean insertToDoListItemSetDataAndTime(String title, )
 
-    public Cursor getAllToDoItemsAsArrayList() {
+    public ArrayList<ToDoItemModel> getTitlePriorityDeadlineOfAllToDoItemsAsArrayList() {
+        ArrayList<ToDoItemModel> toDoListItemsTitlePriorityDeadlineArrayList = new ArrayList<>();
 
+        SQLiteDatabase db = this.getReadableDatabase();
+        String getAllQuery = "SELECT * FROM " + TODOLIST_TABLE_NAME;
+        Cursor cursor = db.rawQuery(getAllQuery, null);
+        // todo: test whether the 1st item was included
+        cursor.moveToFirst();
+
+        while (cursor.isAfterLast() == false) {
+            String title = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_TITLE));
+            int priority = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_PRIORITY));
+            long deadline = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_DEADLINE));
+            ToDoItemModel toDoListItem = new ToDoItemModel(title, priority, deadline);
+            toDoListItemsTitlePriorityDeadlineArrayList.add(toDoListItem);
+            cursor.moveToNext();
+        }
+        return toDoListItemsTitlePriorityDeadlineArrayList;
     }
+
+    /**
+     * Returns total rows of the table
+     *
+     * @return
+     */
+    public int numberOfTotalToDoItems() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int numRows = (int) DatabaseUtils.queryNumEntries(db, TODOLIST_TABLE_NAME);
+        return numRows;
+    }
+
+    /**
+     * returns total rows of incomplete todolist items
+     *
+     * @return
+     */
+//    public int numberOfNotStartedToDoItems(){
+//        SQLiteDatabase db = this.getReadableDatabase();
+//    }
+//
+//    public int numberOfIncompleteToDoItems() {
+//        SQLiteDatabase db = this.getReadableDatabase();
+//
+//    }
+//
+//    public int numberOfCompletedToDoItem() {
+//        SQLiteDatabase db = this.getReadableDatabase();
+//    }
+    public boolean deleteToDoListItem(String title, Long dateAndTimeCreated) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TODOLIST_TABLE_NAME,
+                TODOLIST_ITEM_TIME_DATE_CREATED + " =? & " +
+                        TODOLIST_ITEM_TITLE + " =?",
+                new String[]{dateAndTimeCreated.toString(), title});
+        return true;
+    }
+
+
 }

@@ -3,9 +3,6 @@ package com.example.tek.first.servant.todolist.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by Leon on 8/26/2015.
- */
 public class TimeModel implements Parcelable {
 
     private int hour;

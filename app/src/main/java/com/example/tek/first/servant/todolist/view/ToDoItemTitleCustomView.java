@@ -8,23 +8,23 @@ import android.widget.TextView;
 
 import com.example.tek.first.servant.R;
 
-public class ToDoListItemView extends TextView {
+public class ToDoItemTitleCustomView extends TextView {
     private Paint marginPaint;
     private Paint linePaint;
     private int paperColor;
     private float margin;
 
-    public ToDoListItemView(Context context) {
+    public ToDoItemTitleCustomView(Context context) {
         super(context);
         init();
     }
 
-    public ToDoListItemView(Context context, AttributeSet attrs) {
+    public ToDoItemTitleCustomView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public ToDoListItemView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ToDoItemTitleCustomView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
