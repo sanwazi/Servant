@@ -44,6 +44,7 @@ public class ToDoListMainActivity extends Activity
         setContentView(R.layout.activity_todolist);
 
         dbHelper = new DatabaseHelper(ToDoListMainActivity.this);
+
         FragmentManager fragmentManager = getFragmentManager();
         NewItemAddedFragment newItemAddedFragment =
                 (NewItemAddedFragment) fragmentManager.findFragmentById(R.id.todolist_newitem);
@@ -53,6 +54,9 @@ public class ToDoListMainActivity extends Activity
                 = (ToDoListDisplayFragment) fragmentManager.findFragmentById(R.id.todolist_displayfragment);
 
         toDoListCustomAdapter = new ToDoListCustomAdapter(ToDoListMainActivity.this, toDoItemsArrayList);
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelableArrayList(GeneralConstants.TO_DO_ITEMS_ARRAYLIST_IDENTIFIER, toDoItemsArrayList);
+//        toDoListDisplayFragment.setArguments(bundle);
         toDoListDisplayFragment.setListAdapter(toDoListCustomAdapter);
     }
 
@@ -81,7 +85,7 @@ public class ToDoListMainActivity extends Activity
 
     @Override
     public void onNewItemAdded(ToDoItemModel toDoItem) {
-        Long itemDateAndTimeSet = GeneralHelper.DateAndTimeFormattedToLong(dateSelected, timeSelected);
+        Long itemDateAndTimeSet = GeneralHelper.dateAndTimeFormattedToLong(dateSelected, timeSelected);
         toDoItem.setToDoItemDeadline(itemDateAndTimeSet);
         this.toDoItem = toDoItem;
         dbHelper.insertToDoListItem(toDoItem);

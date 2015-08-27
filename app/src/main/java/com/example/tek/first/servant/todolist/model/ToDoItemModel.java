@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-import com.example.tek.first.servant.todolist.helper.GeneralHelper.CompleteStatus;
+import com.example.tek.first.servant.todolist.helper.GeneralHelper.CompletionStatus;
 
 public class ToDoItemModel implements Parcelable {
 
@@ -16,7 +16,7 @@ public class ToDoItemModel implements Parcelable {
     private Long itemCreatedDateAndTime;
     private Long toDoItemDeadline;
     private int category;
-    private CompleteStatus completeStatus;
+    private CompletionStatus completionStatus;
 
     public ToDoItemModel() {
         this.title = null;
@@ -25,7 +25,7 @@ public class ToDoItemModel implements Parcelable {
         this.itemCreatedDateAndTime = 0L;
         this.toDoItemDeadline = 0L;
         this.category = 0;
-        this.completeStatus = CompleteStatus.NOTSTARTED;
+        this.completionStatus = CompletionStatus.NOTSTARTED;
     }
 
     public ToDoItemModel(String title, int priority, long toDoItemDeadline) {
@@ -41,7 +41,7 @@ public class ToDoItemModel implements Parcelable {
         this.itemCreatedDateAndTime = itemCreatedDateAndTime;
         this.toDoItemDeadline = toDoItemDeadline;
         this.category = category;
-        this.completeStatus = completeStatus.NOTSTARTED;
+        this.completionStatus = completionStatus.NOTSTARTED;
 
     }
 
@@ -54,13 +54,13 @@ public class ToDoItemModel implements Parcelable {
         this.category = category;
         switch (statusCode) {
             case 0:
-                this.completeStatus = completeStatus.NOTSTARTED;
+                this.completionStatus = completionStatus.NOTSTARTED;
                 break;
             case 1:
-                this.completeStatus = completeStatus.INCOMPLETED;
+                this.completionStatus = completionStatus.INCOMPLETED;
                 break;
             case 2:
-                this.completeStatus = completeStatus.COMPLETED;
+                this.completionStatus = completionStatus.COMPLETED;
                 break;
             default:
                 Log.v(LOG_TAG, "completeStatusCode is OutOfBound. lol");
@@ -68,22 +68,22 @@ public class ToDoItemModel implements Parcelable {
         }
     }
 
-    public ToDoItemModel(String title, int priority, String detailDescription, Long itemCreatedDateAndTime, Long toDoItemDeadline, int category, CompleteStatus completeStatus) {
+    public ToDoItemModel(String title, int priority, String detailDescription, Long itemCreatedDateAndTime, Long toDoItemDeadline, int category, CompletionStatus completionStatus) {
         this.title = title;
         this.priority = priority;
         this.detailDescription = detailDescription;
         this.itemCreatedDateAndTime = itemCreatedDateAndTime;
         this.toDoItemDeadline = toDoItemDeadline;
         this.category = category;
-        this.completeStatus = completeStatus;
+        this.completionStatus = completionStatus;
     }
 
     public int getCompleteStatusCode() {
-        return completeStatus.getStatusCode();
+        return completionStatus.getStatusCode();
     }
 
     public void setCompleteStatusCode(int statusCode) {
-        completeStatus.setStatusCode(statusCode);
+        completionStatus.setStatusCode(statusCode);
     }
 
     public void setCategory(int category) {
@@ -148,7 +148,7 @@ public class ToDoItemModel implements Parcelable {
         dest.writeInt(category);
         dest.writeLong(itemCreatedDateAndTime);
         dest.writeLong(toDoItemDeadline);
-        dest.writeValue(completeStatus);
+        dest.writeValue(completionStatus);
     }
 
     protected ToDoItemModel(Parcel in) {
@@ -158,7 +158,7 @@ public class ToDoItemModel implements Parcelable {
         itemCreatedDateAndTime = in.readLong();
         toDoItemDeadline = in.readLong();
         category = in.readInt();
-        completeStatus = in.readParcelable(CompleteStatus.class.getClassLoader());
+        completionStatus = in.readParcelable(CompletionStatus.class.getClassLoader());
     }
 
     public static final Creator<ToDoItemModel> CREATOR = new Creator<ToDoItemModel>() {

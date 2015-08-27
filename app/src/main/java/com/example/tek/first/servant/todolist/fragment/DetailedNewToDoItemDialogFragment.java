@@ -45,7 +45,7 @@ public class DetailedNewToDoItemDialogFragment extends DialogFragment {
     private Long itemDateAndTimeSet = 0L;
     private int priority = 1;
     private int category = 0;
-    private GeneralHelper.CompleteStatus completeStatus = GeneralHelper.CompleteStatus.NOTSTARTED;
+    private GeneralHelper.CompletionStatus completionStatus = GeneralHelper.CompletionStatus.NOTSTARTED;
 
     private OnNewItemAddedListener onNewItemAddedListener;
 
@@ -158,7 +158,7 @@ public class DetailedNewToDoItemDialogFragment extends DialogFragment {
                     Log.v(LOG_TAG, "currentTimeStamp: " + currentTimeStamp);
                     category = 0;
 
-                    ToDoItemModel toDoListItem = new ToDoItemModel(title, priority, descriptionText, currentTimeStamp, itemDateAndTimeSet, category, completeStatus);
+                    ToDoItemModel toDoListItem = new ToDoItemModel(title, priority, descriptionText, currentTimeStamp, itemDateAndTimeSet, category, completionStatus);
                     onNewItemAddedListener.onNewItemAdded(toDoListItem);
                     dismiss();
                 } else {

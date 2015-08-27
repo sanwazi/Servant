@@ -10,7 +10,7 @@ import com.example.tek.first.servant.todolist.model.TimeModel;
 public class GeneralHelper {
     private static String LOG_TAG = GeneralHelper.class.getSimpleName();
 
-    public static Long DateAndTimeFormattedToLong(DateModel date, TimeModel time) {
+    public static Long dateAndTimeFormattedToLong(DateModel date, TimeModel time) {
         if (date != null && time != null)
             return Long.parseLong(date.formatToString() + time.formatToString());
         else {
@@ -24,14 +24,14 @@ public class GeneralHelper {
      * 1: incompleted
      * 2: completed
      */
-    public enum CompleteStatus implements Parcelable {
+    public enum CompletionStatus implements Parcelable {
         NOTSTARTED(0),
         INCOMPLETED(1),
         COMPLETED(2);
 
         private int statusCode;
 
-        CompleteStatus(int statusCode) {
+        CompletionStatus(int statusCode) {
             this.statusCode = statusCode;
         }
 
@@ -55,17 +55,29 @@ public class GeneralHelper {
         }
 
         // todo: what is this method used for? Possible explanation might be found at Parcelable class
-        public static final Parcelable.Creator<CompleteStatus> CREATOR = new Parcelable.Creator<CompleteStatus>() {
+        public static final Parcelable.Creator<CompletionStatus> CREATOR = new Parcelable.Creator<CompletionStatus>() {
 
-            public CompleteStatus createFromParcel(Parcel in) {
-                CompleteStatus completeStatus = CompleteStatus.values()[in.readInt()];
-                completeStatus.setStatusCode(in.readInt());
-                return completeStatus;
+            public CompletionStatus createFromParcel(Parcel in) {
+                CompletionStatus completionStatus = CompletionStatus.values()[in.readInt()];
+                completionStatus.setStatusCode(in.readInt());
+                return completionStatus;
             }
 
-            public CompleteStatus[] newArray(int size) {
-                return new CompleteStatus[size];
+            public CompletionStatus[] newArray(int size) {
+                return new CompletionStatus[size];
             }
         };
+    }
+
+    public static CompletionStatus completionStatusCodeToCompletationStatus(int completionStatusCode) {
+        switch (completionStatusCode) {
+            case 0:
+                return CompletionStatus.NOTSTARTED;
+            case 1:
+                return CompletionStatus.INCOMPLETED;
+            case 2:
+                return CompletionStatus.COMPLETED;
+        }
+        return CompletionStatus.NOTSTARTED;
     }
 }

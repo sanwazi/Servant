@@ -9,13 +9,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.tek.first.servant.todolist.model.ToDoItemModel;
+import com.example.tek.first.servant.todolist.helper.GeneralHelper.*;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-/**
- * Created by Leon on 8/26/2015.
- */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static String LOG_TAG = DatabaseHelper.class.getSimpleName();
@@ -93,6 +91,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             int priority = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_PRIORITY));
             long deadline = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_DEADLINE));
             ToDoItemModel toDoListItem = new ToDoItemModel(title, priority, deadline);
+            toDoListItemsTitlePriorityDeadlineArrayList.add(toDoListItem);
+            cursor.moveToNext();
+        }
+        return toDoListItemsTitlePriorityDeadlineArrayList;
+    }
+
+    public ArrayList<ToDoItemModel> getAllToDoItemsAsArrayList() {
+        ArrayList<ToDoItemModel> toDoListItemsTitlePriorityDeadlineArrayList = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String getAllQuery = "SELECT * FROM " + TODOLIST_TABLE_NAME;
+        Cursor cursor = db.rawQuery(getAllQuery, null);
+        // todo: test whether the 1st item was included
+        cursor.moveToFirst();
+
+        while (cursor.isAfterLast() == false) {
+            String title = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_TITLE));
+            int priority = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_PRIORITY));
+            String description = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_DESCRIPTION));
+            Long itemCreatedDateAndTime = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_TIME_DATE_CREATED));
+            long deadline = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_DEADLINE));
+            int category = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_CATEGORY));
+            int completionStatusCode = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_COMPLETE_STATUS));
+            ToDoItemModel toDoListItem = new ToDoItemModel(title, priority, description, itemCreatedDateAndTime, deadline, category, completionStatusCode);
             toDoListItemsTitlePriorityDeadlineArrayList.add(toDoListItem);
             cursor.moveToNext();
         }

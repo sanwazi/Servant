@@ -20,4 +20,6 @@ public abstract class GeneralConstants {
     public static final int TODOLISTITEM_STATUS_NOT_STARTED = 0;
     public static final int TODOLISTITEM_STATUS_INCOMPLETE = 1;
     public static final int TODOLISTITEM_STATUS_COMPLETE = 2;
+
+    public static final String TO_DO_ITEM_IDENTIFIER = "toDoItemIdentifier";
 }
