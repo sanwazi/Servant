@@ -2,4 +2,7 @@
     <string name="app_name">Servant</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="login_button_title">Login</string>
+    <string name="signUP_button_title">Sign up</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
 </resources>
