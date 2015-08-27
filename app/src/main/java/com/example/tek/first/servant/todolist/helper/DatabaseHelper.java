@@ -25,9 +25,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static String TODOLIST_ITEM_TITLE = "todolist_title";
     public static String TODOLIST_ITEM_DESCRIPTION = "todolist_description";
     public static String TODOLIST_ITEM_PRIORITY = "todolist_priority";
-    public static String TODOLIST_ITEM_TIME_DATE_SET = "todolist_time_date_set";
+    public static String TODOLIST_ITEM_DEADLINE = "todolist_time_date_set";
     public static String TODOLIST_ITEM_TIME_DATE_CREATED = "todolist_time_date_created";
     public static String TODOLIST_ITEM_CATEGORY = "todolist_category";
+    public static String TODOLIST_ITEM_COMPLETE_STATUS = "todolist_complete_status";
 
     public static int VERSION = 1;
 
@@ -42,9 +43,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 TODOLIST_ITEM_TITLE + " TEXT NOT NULL, " +
                 TODOLIST_ITEM_DESCRIPTION + " TEXT, " +
                 TODOLIST_ITEM_PRIORITY + " INTEGER DEFAULT 0, " +
-                TODOLIST_ITEM_TIME_DATE_SET + " LONG DEFAULT CURRENT_TIMESTAMP, " +
+                TODOLIST_ITEM_DEADLINE + " LONG DEFAULT CURRENT_TIMESTAMP, " +
                 TODOLIST_ITEM_TIME_DATE_CREATED + " LONG DEFAULT CURRENT_TIMESTAMP, " +
-                TODOLIST_ITEM_CATEGORY + " INTEGER DEFAULT 0)";
+                TODOLIST_ITEM_CATEGORY + " INTEGER DEFAULT 0, " +
+                TODOLIST_ITEM_COMPLETE_STATUS + " INTEGER DEFAULT 0)";
         Log.v(LOG_TAG, "createQuery: " + createTableQuery);
 
         db.execSQL(createTableQuery);
@@ -66,15 +68,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(TODOLIST_ITEM_DESCRIPTION, toDoListItem.getDetailDescription());
         contentValues.put(TODOLIST_ITEM_PRIORITY, toDoListItem.getPriority());
         contentValues.put(TODOLIST_ITEM_TIME_DATE_CREATED, dateFormat.format(toDoListItem.getItemCreatedDateAndTime()));
-        contentValues.put(TODOLIST_ITEM_TIME_DATE_SET, dateFormat.format(toDoListItem.getItemCreatedDateAndTime()));
+        contentValues.put(TODOLIST_ITEM_DEADLINE, dateFormat.format(toDoListItem.getItemCreatedDateAndTime()));
         contentValues.put(TODOLIST_ITEM_CATEGORY, toDoListItem.getCategory());
+        contentValues.put(TODOLIST_ITEM_COMPLETE_STATUS, toDoListItem.getCompleteStatus());
         db.insert(TODOLIST_TABLE_NAME, null, contentValues);
         return true;
     }
 
 //    public boolean insertToDoListItemSetDataAndTime(String title, )
 
-    public Cursor getAllToDoItemsAsArrayList(){
+    public Cursor getAllToDoItemsAsArrayList() {
 
     }
 }

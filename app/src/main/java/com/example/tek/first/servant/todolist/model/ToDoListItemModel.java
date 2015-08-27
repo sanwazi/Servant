@@ -10,36 +10,25 @@ public class ToDoListItemModel implements Parcelable {
     private Long itemCreatedDateAndTime;
     private Long itemDateAndTimeSet;
     private int category;
+    private int completeStatus;
 
-    public ToDoListItemModel(String title, int priority, String detailDescription, Long itemCreatedDateAndTime, Long itemDateAndTimeSet, int category) {
+    public ToDoListItemModel(String title, int priority, String detailDescription, Long itemCreatedDateAndTime, Long itemDateAndTimeSet, int category, int completeStatus) {
         this.title = title;
         this.priority = priority;
         this.detailDescription = detailDescription;
         this.itemCreatedDateAndTime = itemCreatedDateAndTime;
         this.itemDateAndTimeSet = itemDateAndTimeSet;
         this.category = category;
+        this.completeStatus = completeStatus;
     }
 
-    protected ToDoListItemModel(Parcel in) {
-        title = in.readString();
-        priority = in.readInt();
-        detailDescription = in.readString();
-        itemCreatedDateAndTime = in.readLong();
-        itemDateAndTimeSet = in.readLong();
-        category = in.readInt();
+    public int getCompleteStatus() {
+        return completeStatus;
     }
 
-    public static final Creator<ToDoListItemModel> CREATOR = new Creator<ToDoListItemModel>() {
-        @Override
-        public ToDoListItemModel createFromParcel(Parcel in) {
-            return new ToDoListItemModel(in);
-        }
-
-        @Override
-        public ToDoListItemModel[] newArray(int size) {
-            return new ToDoListItemModel[size];
-        }
-    };
+    public void setCompleteStatus(int completeStatus) {
+        this.completeStatus = completeStatus;
+    }
 
     public void setCategory(int category) {
         this.category = category;
@@ -48,7 +37,7 @@ public class ToDoListItemModel implements Parcelable {
     public int getCategory() {
         return category;
     }
-    
+
     public void setPriority(int priority) {
         this.priority = priority;
     }
@@ -103,5 +92,28 @@ public class ToDoListItemModel implements Parcelable {
         dest.writeInt(category);
         dest.writeLong(itemCreatedDateAndTime);
         dest.writeLong(itemDateAndTimeSet);
+        dest.writeInt(completeStatus);
     }
+
+    protected ToDoListItemModel(Parcel in) {
+        title = in.readString();
+        priority = in.readInt();
+        detailDescription = in.readString();
+        itemCreatedDateAndTime = in.readLong();
+        itemDateAndTimeSet = in.readLong();
+        category = in.readInt();
+        completeStatus = in.readInt();
+    }
+
+    public static final Creator<ToDoListItemModel> CREATOR = new Creator<ToDoListItemModel>() {
+        @Override
+        public ToDoListItemModel createFromParcel(Parcel in) {
+            return new ToDoListItemModel(in);
+        }
+
+        @Override
+        public ToDoListItemModel[] newArray(int size) {
+            return new ToDoListItemModel[size];
+        }
+    };
 }
