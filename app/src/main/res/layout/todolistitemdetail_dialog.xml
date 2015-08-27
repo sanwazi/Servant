@@ -3,12 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
+    android:minHeight="480sp"
+    android:minWidth="300sp"
     android:orientation="vertical">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="0dp"
         android:src="@mipmap/todolistitem_header" />
 
     <EditText
@@ -48,15 +49,29 @@
         android:background="@drawable/todolistitemdescription"
         android:hint="@string/todolistitem_description"
         android:inputType="textMultiLine"
-        android:lines="8"
+        android:lines="11"
         android:minLines="6"
         android:scrollbars="vertical" />
 
-    <Button
-        android:id="@+id/btn_confirm_dialog"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/btn_confirm_detaildialog" />
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_confirm_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_confirm_detaildialog" />
+
+        <Button
+            android:id="@+id/btn_clear_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/btn_clear_detaildialog" />
+    </LinearLayout>
 
 </LinearLayout>

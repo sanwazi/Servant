@@ -67,4 +67,12 @@ public class TimeModel implements Parcelable {
                 ", minute=" + minute +
                 '}';
     }
+
+    public String formatToString() {
+        return Integer.toString(hour) + Integer.toString(minute);
+    }
+
+    public Long formatToLong() {
+        return Long.parseLong(formatToString());
+    }
 }

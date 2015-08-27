@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import com.example.tek.first.servant.R;
 import com.example.tek.first.servant.todolist.fragment.DatePickerDialogFragment;
 import com.example.tek.first.servant.todolist.fragment.TimePickerDialogFragment;
 import com.example.tek.first.servant.todolist.helper.DatabaseHelper;
+import com.example.tek.first.servant.todolist.helper.GeneralHelper;
 import com.example.tek.first.servant.todolist.model.DateModel;
 import com.example.tek.first.servant.todolist.model.TimeModel;
 import com.example.tek.first.servant.todolist.model.ToDoListItemModel;
@@ -90,11 +92,13 @@ public class ToDoListMainActivity extends Activity
 //        Log.v(LOG_TAG, "year, dateSelected, ToDoListMainActivity: " + dateSelected.getYear());
 //        Log.v(LOG_TAG, "month, dateSelected, ToDoListMainActivity: " + dateSelected.getMonth());
 //        Log.v(LOG_TAG, "day, dateSelected, ToDoListMainActivity: " + dateSelected.getDay());
+        Toast.makeText(ToDoListMainActivity.this, "Date Selected", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onTimeSelected(TimeModel timeSelected) {
         this.timeSelected = timeSelected;
+        Toast.makeText(ToDoListMainActivity.this, "Time Selected", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -125,9 +129,9 @@ public class ToDoListMainActivity extends Activity
                 }
             });
 
-            if (timeSelected != null) {
-                btnTimePicker.setText(timeSelected.toString());
-            }
+//            if (timeSelected != null) {
+//                btnTimePicker.setText(timeSelected.toString());
+//            }
 
             btnDatePicker.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -137,9 +141,9 @@ public class ToDoListMainActivity extends Activity
                 }
             });
 
-            if (dateSelected != null) {
-                btnDatePicker.setText(dateSelected.toString());
-            }
+//            if (dateSelected != null) {
+//                btnDatePicker.setText(dateSelected.toString());
+//            }
 
             btnConfirm.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -148,14 +152,17 @@ public class ToDoListMainActivity extends Activity
                     if (titleText != null && titleText.length() > 0) {
                         descriptionText = editTextDescription.getText().toString();
                         currentTimeStamp =
-                                Long.parseLong(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
+                                Long.parseLong(new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime()));
+                        Log.v(LOG_TAG, "currentTimeStamp: " + currentTimeStamp);
                         // todo: get all data info
                         priority = 0;
-                        itemDateAndTimeSet = 0L;
+
+                        itemDateAndTimeSet = GeneralHelper.dateAndTimeFormattedToLong(dateSelected, timeSelected);
                         category = 0;
 
                         ToDoListItemModel toDoListItem = new ToDoListItemModel(titleText, priority, descriptionText, currentTimeStamp, itemDateAndTimeSet, category);
                         dbHelper.insertToDoListItem(toDoListItem);
+                        dismiss();
 //                    Intent detailedInfoIntent = new Intent(getActivity(), ToDoListMainActivity.class);
 //                    detailedInfoIntent.putExtra(GeneralConstants.TODOLISTITEM_IDENTIFIER, toDoListItem);
 //                    startActivity(detailedInfoIntent);

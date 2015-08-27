@@ -37,7 +37,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTableQuery = "CREATE TABLE " + TODOLIST_TABLE_NAME + " (" +
-                TODOLIST_ITEM_ID + " PRIMARY KEY AUTOINCREMENT, " +
+                TODOLIST_ITEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 TODOLIST_ITEM_TITLE + " TEXT NOT NULL, " +
                 TODOLIST_ITEM_DESCRIPTION + " TEXT, " +
                 TODOLIST_ITEM_PRIORITY + " INTEGER DEFAULT 0, " +
