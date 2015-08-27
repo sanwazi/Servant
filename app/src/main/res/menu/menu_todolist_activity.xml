@@ -25,4 +25,20 @@
         android:orderInCategory="100"
         android:title="@string/todolist_sort_by_title"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/displaycompleted_menu_activitytodolist"
+        android:orderInCategory="100"
+        android:title="@string/display_completed_todoitems"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/displayincompleted_menu_activitytodolist"
+        android:orderInCategory="100"
+        android:title="@string/display_incompleted_todoitems"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/displaynotstarted_menu_activitytodolist"
+        android:orderInCategory="100"
+        android:title="@string/display_notstarted_todoitems"
+        app:showAsAction="never" />
 </menu>

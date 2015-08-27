@@ -17,6 +17,9 @@
     <string name="todolist_cancel_text">Cancel</string>
     <string name="todoiteminput_edittext_activitytodolist_text">Please input a new todo item</string>
     <string name="clear_confirmation_dialog_text">Are you sure to clear all fields?</string>
+    <string name="display_completed_todoitems">Display Completed ToDoItems</string>
+    <string name="display_incompleted_todoitems">Display Incompleted ToDoItems</string>
+    <string name="display_notstarted_todoitems">Display Not Started ToDoItems</string>
 
     <string-array name="priority_level">
         <item>1</item>
