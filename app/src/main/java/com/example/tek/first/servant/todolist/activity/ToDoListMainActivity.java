@@ -3,11 +3,9 @@ package com.example.tek.first.servant.todolist.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,6 +30,7 @@ import com.example.tek.first.servant.todolist.model.TimeModel;
 import com.example.tek.first.servant.todolist.model.ToDoListItemModel;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class ToDoListMainActivity extends Activity
@@ -55,12 +54,14 @@ public class ToDoListMainActivity extends Activity
     private Button btnConfirm;
     private Button btnClear;
 
-    private String descriptionText;
-    private Long currentTimeStamp;
-    private Long itemDateAndTimeSet;
+    private String title = null;
+    private String descriptionText = null;
+    private Long currentTimeStamp = 0L;
+    private Long itemDateAndTimeSet = 0L;
     private int priority = 1;
-    private int category;
+    private int category = 0;
 
+    private ArrayList<ToDoListItemModel> toDoItemsArrayList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,13 +73,13 @@ public class ToDoListMainActivity extends Activity
         btnDetailedToDoListItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                DetailedToDoListItemDialog detailedToDoListItemDialog = new DetailedToDoListItemDialog();
-//                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-//                fragmentTransaction.replace();
                 DetailedToDoListItemDialog detailedToDoListItemDialog = new DetailedToDoListItemDialog();
                 detailedToDoListItemDialog.show(getFragmentManager(), "DetailedToDoListItemDialog");
             }
         });
+
+        dbHelper = new DatabaseHelper(ToDoListMainActivity.this);
+        toDoItemsArrayList = new ArrayList<>();
     }
 
     @Override
@@ -108,11 +109,7 @@ public class ToDoListMainActivity extends Activity
         Toast.makeText(ToDoListMainActivity.this, "Time Selected", Toast.LENGTH_SHORT).show();
     }
 
-
     class DetailedToDoListItemDialog extends DialogFragment {
-
-        private int timePickerHour = 12;
-        private int timePickerMin = 0;
 
         @Nullable
         @Override
@@ -198,8 +195,8 @@ public class ToDoListMainActivity extends Activity
             btnConfirm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String titleText = editTextTitle.getText().toString();
-                    if (titleText != null && titleText.length() > 0) {
+                    title = editTextTitle.getText().toString();
+                    if (title != null && title.length() > 0) {
                         descriptionText = editTextDescription.getText().toString();
                         currentTimeStamp =
                                 Long.parseLong(new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime()));
@@ -207,7 +204,7 @@ public class ToDoListMainActivity extends Activity
                         itemDateAndTimeSet = GeneralHelper.dateAndTimeFormattedToLong(dateSelected, timeSelected);
                         category = 0;
 
-                        ToDoListItemModel toDoListItem = new ToDoListItemModel(titleText, priority, descriptionText, currentTimeStamp, itemDateAndTimeSet, category);
+                        ToDoListItemModel toDoListItem = new ToDoListItemModel(title, priority, descriptionText, currentTimeStamp, itemDateAndTimeSet, category);
                         dbHelper.insertToDoListItem(toDoListItem);
                         dismiss();
 //                    Intent detailedInfoIntent = new Intent(getActivity(), ToDoListMainActivity.class);
