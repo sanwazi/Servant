@@ -1,15 +1,21 @@
 package com.example.tek.first.servant.todolist.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -47,11 +53,12 @@ public class ToDoListMainActivity extends Activity
     private Button btnDatePicker;
     private Button btnTimePicker;
     private Button btnConfirm;
+    private Button btnClear;
 
     private String descriptionText;
     private Long currentTimeStamp;
     private Long itemDateAndTimeSet;
-    private int priority;
+    private int priority = 1;
     private int category;
 
 
@@ -114,6 +121,49 @@ public class ToDoListMainActivity extends Activity
             editTextTitle = (EditText) rootView.findViewById(R.id.edittext_title_todolistitem);
             editTextDescription = (EditText) rootView.findViewById(R.id.edittext_description_todolistitem);
 
+            btnClear = (Button) rootView.findViewById(R.id.btn_clear_dialog);
+            btnClear.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+                    View rootView = inflater.inflate(R.layout.todolist_textview, null);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setView(rootView).setTitle(R.string.clear_confirmation_dialog_text)
+                            .setPositiveButton(R.string.todolist_clear_text, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    editTextTitle.setText("");
+                                    editTextDescription.setText("");
+                                }
+                            }).setNegativeButton(R.string.todolist_cancel_text, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    builder.create();
+                }
+            });
+
+            spinnerPriority = (Spinner) rootView.findViewById(R.id.spinner_priority_todolistitem);
+            ArrayAdapter spinnerAdapter = ArrayAdapter.createFromResource(getActivity(),
+                    R.array.priority_level, android.R.layout.simple_spinner_item);
+
+            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerPriority.setAdapter(spinnerAdapter);
+
+            spinnerPriority.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    priority = position + 1;
+                    Toast.makeText(getActivity(), "Priority: " + priority, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    priority = 1;
+                }
+            });
+
             dbHelper = new DatabaseHelper(getActivity());
 
             spinnerPriority = (Spinner) rootView.findViewById(R.id.spinner_priority_todolistitem);
@@ -154,9 +204,6 @@ public class ToDoListMainActivity extends Activity
                         currentTimeStamp =
                                 Long.parseLong(new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime()));
                         Log.v(LOG_TAG, "currentTimeStamp: " + currentTimeStamp);
-                        // todo: get all data info
-                        priority = 0;
-
                         itemDateAndTimeSet = GeneralHelper.dateAndTimeFormattedToLong(dateSelected, timeSelected);
                         category = 0;
 
