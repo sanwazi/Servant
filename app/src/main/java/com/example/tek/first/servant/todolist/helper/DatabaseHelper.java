@@ -61,16 +61,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public boolean insertToDoListItem(ToDoItemModel toDoListItem) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TODOLIST_ITEM_TITLE, toDoListItem.getTitle());
         contentValues.put(TODOLIST_ITEM_DESCRIPTION, toDoListItem.getDetailDescription());
         contentValues.put(TODOLIST_ITEM_PRIORITY, toDoListItem.getPriority());
-        String toDoItemDateAndTimeCreated = dateFormat.format(toDoListItem.getItemCreatedDateAndTime()).toString();
+        Long toDoItemDateAndTimeCreatedLongType = toDoListItem.getItemCreatedDateAndTime();
+        Log.v(LOG_TAG, "itemCreatedDateAndTimeLongType inserted by DatabaseHelper: " + toDoItemDateAndTimeCreatedLongType);
+        String toDoItemDateAndTimeCreated = Long.toString(toDoItemDateAndTimeCreatedLongType);
         contentValues.put(TODOLIST_ITEM_TIME_DATE_CREATED, toDoItemDateAndTimeCreated);
         Log.v(LOG_TAG, "itemCreatedDateAndTime inserted by DatabaseHelper: " + toDoItemDateAndTimeCreated);
-        String deadline = dateFormat.format(toDoListItem.getToDoItemDeadline()).toString();
+        String deadline = Long.toString(toDoListItem.getToDoItemDeadline());
         contentValues.put(TODOLIST_ITEM_DEADLINE, deadline);
         Log.v(LOG_TAG, "deadline inserted by DatabaseHelper: " + deadline);
         contentValues.put(TODOLIST_ITEM_CATEGORY, toDoListItem.getCategory());

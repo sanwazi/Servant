@@ -1,6 +1,7 @@
 package com.example.tek.first.servant.todolist.activity;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +10,13 @@ import android.widget.TextView;
 
 import com.example.tek.first.servant.R;
 import com.example.tek.first.servant.todolist.model.ToDoItemModel;
+import com.example.tek.first.servant.todolist.customview.textview.ToDoItemPriorityCustomView;
 
 import java.util.ArrayList;
 
 public class ToDoListCustomAdapter extends BaseAdapter {
+
+    private static String LOG_TAG = ToDoListCustomAdapter.class.getSimpleName();
 
     private Context context;
     private ArrayList<ToDoItemModel> toDoListItemsArrayList;
@@ -21,7 +25,6 @@ public class ToDoListCustomAdapter extends BaseAdapter {
         this.context = context;
         this.toDoListItemsArrayList = toDoListItemsArrayList;
     }
-
 
     @Override
     public int getCount() {
@@ -33,6 +36,10 @@ public class ToDoListCustomAdapter extends BaseAdapter {
         return toDoListItemsArrayList.get(position);
     }
 
+    public int getPriority(int position) {
+        return (getItem(position)).getPriority();
+    }
+
     @Override
     public long getItemId(int position) {
         return position;
@@ -42,12 +49,16 @@ public class ToDoListCustomAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rootView = inflater.inflate(R.layout.todoitem, null);
-        TextView textViewPriority = (TextView) rootView.findViewById(R.id.todolist_row_priority);
+//        TextView textViewPriority = (TextView) rootView.findViewById(R.id.todolist_row_priority);
+        // todo: textview with custom color based on different priority level
+        TextView textViewPriority = new ToDoItemPriorityCustomView(context, null, getPriority(position));
+//        textViewPriority =  (TextView) rootView.findViewById(R.id.todolist_row_priority);
+        Log.v(LOG_TAG, "getPriority(position): " + Integer.toString(getPriority(position)));
         TextView textViewDeadline = (TextView) rootView.findViewById(R.id.todolist_row_deadline);
         TextView textViewTitle = (TextView) rootView.findViewById(R.id.todolist_row_title);
 
         textViewTitle.setText(toDoListItemsArrayList.get(position).getTitle());
-        textViewPriority.setText(Integer.toString(toDoListItemsArrayList.get(position).getPriority()));
+        textViewPriority.setText(Integer.toString(getPriority(position)));
         Long deadline = toDoListItemsArrayList.get(position).getToDoItemDeadline();
         if (deadline > 0L) {
             textViewDeadline.setText(deadline.toString());
@@ -55,4 +66,5 @@ public class ToDoListCustomAdapter extends BaseAdapter {
 
         return rootView;
     }
+
 }

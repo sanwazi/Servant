@@ -5,36 +5,11 @@
     <item
         android:id="@+id/sortbypriority_menu_activitytodolist"
         android:orderInCategory="100"
-        android:title="@string/todolist_sort_by_priority"
+        android:title="@string/todolist_menu_sort"
         app:showAsAction="never" />
     <item
         android:id="@+id/sortbyaddedtime_menu_activitytodolist"
         android:orderInCategory="100"
-        android:title="@string/todolist_sort_by_added_time"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/sortbynotificationtime_menu_activitytodolist"
-        android:orderInCategory="100"
-        android:title="@string/todolist_sort_by_notification_time"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/sortbytitle_menu_activitytodolist"
-        android:orderInCategory="100"
-        android:title="@string/todolist_sort_by_title"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/displaycompleted_menu_activitytodolist"
-        android:orderInCategory="100"
-        android:title="@string/display_completed_todoitems"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/displayincompleted_menu_activitytodolist"
-        android:orderInCategory="100"
-        android:title="@string/display_incompleted_todoitems"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/displaynotstarted_menu_activitytodolist"
-        android:orderInCategory="100"
-        android:title="@string/display_notstarted_todoitems"
+        android:title="@string/todolist_menu_display"
         app:showAsAction="never" />
 </menu>

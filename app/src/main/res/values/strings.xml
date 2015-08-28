@@ -2,10 +2,8 @@
     <string name="app_name">Servant</string>
 
     <!-- string for todolist Activity-->
-    <string name="todolist_sort_by_title">Sort by Title</string>
-    <string name="todolist_sort_by_added_time">Sort by Added Time</string>
-    <string name="todolist_sort_by_notification_time">Sort by Notification Time</string>
-    <string name="todolist_sort_by_priority">Sort by Priority</string>
+    <string name="todolist_menu_sort">Sort by</string>
+    <string name="todolist_menu_display">Display</string>
     <string name="todolist_ben_selecttime_text">Pick Time</string>
     <string name="todolist_ben_selectdate_text">Pick Date</string>
     <string name="todolistitem_title">Title</string>
@@ -20,6 +18,15 @@
     <string name="display_completed_todoitems">Display Completed ToDoItems</string>
     <string name="display_incompleted_todoitems">Display Incompleted ToDoItems</string>
     <string name="display_notstarted_todoitems">Display Not Started ToDoItems</string>
+
+    <!-- Menu dialog box radio button text-->
+    <string name="sort_menu_radiobutton_sortbydeadline">Sort by Deadline</string>
+    <string name="sort_menu_radiobutton_sortbypriority">Sort by Priority</string>
+    <string name="sort_menu_radiobutton_sortbytitle">Sort by Title</string>
+    <string name="sort_menu_radiobutton_sortbydateandtimecreated">Sort by Time Created</string>
+    <string name="sort_menu_radiobutton_displayincompleteditems">Display Incompleted Items</string>
+    <string name="sort_menu_radiobutton_displaynotstarteditems">Display Not Started Items</string>
+    <string name="sort_menu_radiobutton_displaycompleteditems">Display Completed Items</string>
 
     <string-array name="priority_level">
         <item>1</item>

@@ -70,7 +70,6 @@ public class DateModel implements Parcelable {
 
     @Override
     public String toString() {
-
         return month + " " + day + ", " + year;
     }
 

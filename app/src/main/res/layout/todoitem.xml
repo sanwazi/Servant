@@ -6,20 +6,21 @@
 
     <TextView
         android:id="@+id/todolist_row_priority"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true" />
+        android:layout_width="60sp"
+        android:layout_height="60sp"
+        android:layout_alignParentLeft="true"
+        android:gravity="center" />
 
-    <TextView
+    <com.example.tek.first.servant.todolist.customview.textview.ToDoItemDeadlineCustomView
         android:id="@+id/todolist_row_deadline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100sp"
+        android:layout_height="60sp"
         android:layout_alignParentRight="true" />
 
-    <com.example.tek.first.servant.todolist.view.ToDoItemTitleCustomView
+    <com.example.tek.first.servant.todolist.customview.textview.ToDoItemTitleCustomView
         android:id="@+id/todolist_row_title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60sp"
         android:layout_toLeftOf="@+id/todolist_row_deadline"
         android:layout_toRightOf="@+id/todolist_row_priority"
         android:fadingEdge="vertical"

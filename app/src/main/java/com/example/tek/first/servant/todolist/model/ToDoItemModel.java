@@ -4,8 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-import com.example.tek.first.servant.todolist.helper.GeneralConstants;
-import com.example.tek.first.servant.todolist.helper.GeneralHelper;
 import com.example.tek.first.servant.todolist.helper.GeneralHelper.CompletionStatus;
 
 public class ToDoItemModel implements Parcelable {
