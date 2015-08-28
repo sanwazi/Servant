@@ -23,7 +23,7 @@
     <string name="sort_menu_radiobutton_sortbydeadline">Sort by Deadline</string>
     <string name="sort_menu_radiobutton_sortbypriority">Sort by Priority</string>
     <string name="sort_menu_radiobutton_sortbytitle">Sort by Title</string>
-    <string name="sort_menu_radiobutton_sortbydateandtimecreated">Sort by Time Created</string>
+    <string name="sort_menu_radiobutton_sortbydateandtimecreated">Sort by Time Added</string>
     <string name="sort_menu_radiobutton_displayincompleteditems">Display Incompleted Items</string>
     <string name="sort_menu_radiobutton_displaynotstarteditems">Display Not Started Items</string>
     <string name="sort_menu_radiobutton_displaycompleteditems">Display Completed Items</string>
@@ -39,5 +39,19 @@
         <item>8</item>
         <item>9</item>
         <item>10</item>
+    </string-array>
+
+    <string-array name="menu_sort_standard">
+        <item>Priority</item>
+        <item>Deadline</item>
+        <item>Time Added</item>
+        <item>Title</item>
+    </string-array>
+
+    <string-array name="menu_display_standard">
+        <item>Incomplete</item>
+        <item>Complete</item>
+        <item>Not Started</item>
+        <item>All</item>
     </string-array>
 </resources>

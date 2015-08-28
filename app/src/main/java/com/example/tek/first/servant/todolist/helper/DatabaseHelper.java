@@ -7,6 +7,7 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.TableLayout;
 
 import com.example.tek.first.servant.todolist.model.ToDoItemModel;
 import com.example.tek.first.servant.todolist.helper.GeneralHelper.*;
@@ -91,7 +92,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // todo: test whether the 1st item was included
         cursor.moveToFirst();
 
-        while (cursor.isAfterLast() == false) {
+        while (!cursor.isAfterLast()) {
             String title = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_TITLE));
             int priority = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_PRIORITY));
             long deadline = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_DEADLINE));
@@ -166,5 +167,196 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public ArrayList<ToDoItemModel> toDoItemsArrayListSortByDeadline() {
+        ArrayList<ToDoItemModel> toDoItemsArrayListSortByDeadline = new ArrayList<>();
 
+        SQLiteDatabase db = this.getReadableDatabase();
+        String getAllToDoItemsOrderByDeadlineQuery = "SELECT * FROM " + TODOLIST_TABLE_NAME + " ORDER BY " + TODOLIST_ITEM_DEADLINE;
+        Log.v(LOG_TAG, "getAllToDoItemsOrderByDeadlineQuery: " + getAllToDoItemsOrderByDeadlineQuery);
+        Cursor cursor = db.rawQuery(getAllToDoItemsOrderByDeadlineQuery, null);
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast()) {
+            String title = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_TITLE));
+            int priority = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_PRIORITY));
+            long deadline = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_DEADLINE));
+            long itemDateAndTimeCreated = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_TIME_DATE_CREATED));
+            String detailDescription = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_DESCRIPTION));
+            int category = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_CATEGORY));
+            int completionStatusCode = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_COMPLETE_STATUS));
+            ToDoItemModel toDoListItem = new ToDoItemModel(title, priority, detailDescription,
+                    itemDateAndTimeCreated, deadline, category, completionStatusCode);
+            toDoItemsArrayListSortByDeadline.add(toDoListItem);
+            cursor.moveToNext();
+        }
+
+        return toDoItemsArrayListSortByDeadline;
+    }
+
+    public ArrayList<ToDoItemModel> toDoItemsArrayListSortByTitle() {
+        ArrayList<ToDoItemModel> toDoItemsArrayListSortByTitle = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String getAllToDoItemsOrderByTitleQuery = "SELECT * FROM " + TODOLIST_TABLE_NAME + " ORDER BY " + TODOLIST_ITEM_TITLE;
+        Log.v(LOG_TAG, "getAllToDoItemsOrderByTitleQuery: " + getAllToDoItemsOrderByTitleQuery);
+        Cursor cursor = db.rawQuery(getAllToDoItemsOrderByTitleQuery, null);
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast()) {
+            String title = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_TITLE));
+            int priority = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_PRIORITY));
+            long deadline = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_DEADLINE));
+            long itemDateAndTimeCreated = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_TIME_DATE_CREATED));
+            String detailDescription = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_DESCRIPTION));
+            int category = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_CATEGORY));
+            int completionStatusCode = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_COMPLETE_STATUS));
+            ToDoItemModel toDoListItem = new ToDoItemModel(title, priority, detailDescription,
+                    itemDateAndTimeCreated, deadline, category, completionStatusCode);
+            toDoItemsArrayListSortByTitle.add(toDoListItem);
+            cursor.moveToNext();
+        }
+
+        return toDoItemsArrayListSortByTitle;
+    }
+
+    public ArrayList<ToDoItemModel> toDoItemsArrayListSortByTimeAdded() {
+        ArrayList<ToDoItemModel> toDoItemsArrayListSortByTimeAdded = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String getAllToDoItemsOrderByTimeAddedQuery = "SELECT * FROM " + TODOLIST_TABLE_NAME + " ORDER BY " + TODOLIST_ITEM_TIME_DATE_CREATED;
+        Log.v(LOG_TAG, "getAllToDoItemsOrderByTimeAddedQuery: " + getAllToDoItemsOrderByTimeAddedQuery);
+        Cursor cursor = db.rawQuery(getAllToDoItemsOrderByTimeAddedQuery, null);
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast()) {
+            String title = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_TITLE));
+            int priority = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_PRIORITY));
+            long deadline = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_DEADLINE));
+            long itemDateAndTimeCreated = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_TIME_DATE_CREATED));
+            String detailDescription = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_DESCRIPTION));
+            int category = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_CATEGORY));
+            int completionStatusCode = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_COMPLETE_STATUS));
+            ToDoItemModel toDoListItem = new ToDoItemModel(title, priority, detailDescription,
+                    itemDateAndTimeCreated, deadline, category, completionStatusCode);
+            toDoItemsArrayListSortByTimeAdded.add(toDoListItem);
+            cursor.moveToNext();
+        }
+
+        return toDoItemsArrayListSortByTimeAdded;
+    }
+
+    public ArrayList<ToDoItemModel> toDoItemsArrayListSortByPriority() {
+        ArrayList<ToDoItemModel> toDoItemsArrayListSortByPriority = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String getAllToDoItemsOrderByPriorityQuery = "SELECT * FROM " + TODOLIST_TABLE_NAME + " ORDER BY " + TODOLIST_ITEM_PRIORITY;
+        Log.v(LOG_TAG, "getAllToDoItemsOrderByPriorityQuery: " + getAllToDoItemsOrderByPriorityQuery);
+        Cursor cursor = db.rawQuery(getAllToDoItemsOrderByPriorityQuery, null);
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast()) {
+            String title = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_TITLE));
+            int priority = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_PRIORITY));
+            long deadline = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_DEADLINE));
+            long itemDateAndTimeCreated = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_TIME_DATE_CREATED));
+            String detailDescription = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_DESCRIPTION));
+            int category = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_CATEGORY));
+            int completionStatusCode = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_COMPLETE_STATUS));
+            ToDoItemModel toDoListItem = new ToDoItemModel(title, priority, detailDescription,
+                    itemDateAndTimeCreated, deadline, category, completionStatusCode);
+            toDoItemsArrayListSortByPriority.add(toDoListItem);
+            cursor.moveToNext();
+        }
+
+        return toDoItemsArrayListSortByPriority;
+    }
+
+    public ArrayList<ToDoItemModel> incompleteToDoItemsArrayList() {
+
+        ArrayList<ToDoItemModel> incompleteToDoItemsArrayList = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String getIncompleteToDoItemsOrderByDeadline = "SELECT * FROM " + TODOLIST_TABLE_NAME +
+                " ORDER BY " + TODOLIST_ITEM_DEADLINE +
+                " WHERE " + TODOLIST_ITEM_COMPLETE_STATUS + " = " + GeneralConstants.TODOLISTITEM_STATUS_INCOMPLETE;
+        Log.v(LOG_TAG, "getIncompleteToDoItemsOrderByDeadline: " + getIncompleteToDoItemsOrderByDeadline);
+        Cursor cursor = db.rawQuery(getIncompleteToDoItemsOrderByDeadline, null);
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast()) {
+            String title = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_TITLE));
+            int priority = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_PRIORITY));
+            long deadline = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_DEADLINE));
+            long itemDateAndTimeCreated = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_TIME_DATE_CREATED));
+            String detailDescription = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_DESCRIPTION));
+            int category = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_CATEGORY));
+            int completionStatusCode = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_COMPLETE_STATUS));
+            ToDoItemModel toDoListItem = new ToDoItemModel(title, priority, detailDescription,
+                    itemDateAndTimeCreated, deadline, category, completionStatusCode);
+            incompleteToDoItemsArrayList.add(toDoListItem);
+            cursor.moveToNext();
+        }
+
+        return incompleteToDoItemsArrayList;
+
+    }
+
+    public ArrayList<ToDoItemModel> completeToDoItemsArrayList() {
+
+        ArrayList<ToDoItemModel> completeToDoItemsArrayList = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String getCompleteToDoItemsOrderByDeadline = "SELECT * FROM " + TODOLIST_TABLE_NAME +
+                " ORDER BY " + TODOLIST_ITEM_DEADLINE +
+                "WHERE " + TODOLIST_ITEM_COMPLETE_STATUS + " = " + GeneralConstants.TODOLISTITEM_STATUS_COMPLETE;
+        Log.v(LOG_TAG, "getIncompleteToDoItemsOrderByDeadline: " + getCompleteToDoItemsOrderByDeadline);
+        Cursor cursor = db.rawQuery(getCompleteToDoItemsOrderByDeadline, null);
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast()) {
+            String title = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_TITLE));
+            int priority = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_PRIORITY));
+            long deadline = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_DEADLINE));
+            long itemDateAndTimeCreated = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_TIME_DATE_CREATED));
+            String detailDescription = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_DESCRIPTION));
+            int category = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_CATEGORY));
+            int completionStatusCode = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_COMPLETE_STATUS));
+            ToDoItemModel toDoListItem = new ToDoItemModel(title, priority, detailDescription,
+                    itemDateAndTimeCreated, deadline, category, completionStatusCode);
+            completeToDoItemsArrayList.add(toDoListItem);
+            cursor.moveToNext();
+        }
+
+        return completeToDoItemsArrayList;
+
+    }
+
+    public ArrayList<ToDoItemModel> notStartedToDoItemsArrayList() {
+
+        ArrayList<ToDoItemModel> notStartedToDoItemsArrayList = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String getNotStartedToDoItemsOrderByDeadline = "SELECT * FROM " + TODOLIST_TABLE_NAME +
+                " ORDER BY " + TODOLIST_ITEM_DEADLINE +
+                "WHERE " + TODOLIST_ITEM_COMPLETE_STATUS + " = " + GeneralConstants.TODOLISTITEM_STATUS_NOT_STARTED;
+        Log.v(LOG_TAG, "getIncompleteToDoItemsOrderByDeadline: " + getNotStartedToDoItemsOrderByDeadline);
+        Cursor cursor = db.rawQuery(getNotStartedToDoItemsOrderByDeadline, null);
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast()) {
+            String title = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_TITLE));
+            int priority = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_PRIORITY));
+            long deadline = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_DEADLINE));
+            long itemDateAndTimeCreated = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_TIME_DATE_CREATED));
+            String detailDescription = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_DESCRIPTION));
+            int category = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_CATEGORY));
+            int completionStatusCode = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_COMPLETE_STATUS));
+            ToDoItemModel toDoListItem = new ToDoItemModel(title, priority, detailDescription,
+                    itemDateAndTimeCreated, deadline, category, completionStatusCode);
+            notStartedToDoItemsArrayList.add(toDoListItem);
+            cursor.moveToNext();
+        }
+
+        return notStartedToDoItemsArrayList;
+    }
 }
