@@ -81,18 +81,18 @@ public class GeneralHelper {
         return CompletionStatus.NOTSTARTED;
     }
 
-    public static String formatString(String text) {
+    public static String formatToString(String text) {
         if (text == null || text.length() == 0) {
             return "";
         } else
             return text;
     }
 
-    public static String formatString(Long text) {
-        return text.toString();
+    public static String formatToString(Long text) {
+        return Long.toString(text);
     }
 
-    public static String formatString(int text) {
+    public static String formatToString(int text) {
         return Integer.toString(text);
     }
 }

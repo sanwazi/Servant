@@ -68,16 +68,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(TODOLIST_ITEM_DESCRIPTION, toDoListItem.getDetailDescription());
         contentValues.put(TODOLIST_ITEM_PRIORITY, toDoListItem.getPriority());
         Long toDoItemDateAndTimeCreatedLongType = toDoListItem.getItemCreatedDateAndTime();
-        Log.v(LOG_TAG, "itemCreatedDateAndTimeLongType inserted by DatabaseHelper: " + toDoItemDateAndTimeCreatedLongType);
+        Log.v(LOG_TAG, "itemCreatedDateAndTimeLongType, inserted by DatabaseHelper: " + toDoItemDateAndTimeCreatedLongType);
         String toDoItemDateAndTimeCreated = Long.toString(toDoItemDateAndTimeCreatedLongType);
         contentValues.put(TODOLIST_ITEM_TIME_DATE_CREATED, toDoItemDateAndTimeCreated);
-        Log.v(LOG_TAG, "itemCreatedDateAndTime inserted by DatabaseHelper: " + toDoItemDateAndTimeCreated);
+        Log.v(LOG_TAG, "itemCreatedDateAndTime, inserted by DatabaseHelper: " + toDoItemDateAndTimeCreated);
         String deadline = Long.toString(toDoListItem.getToDoItemDeadline());
         contentValues.put(TODOLIST_ITEM_DEADLINE, deadline);
-        Log.v(LOG_TAG, "deadline inserted by DatabaseHelper: " + deadline);
+        Log.v(LOG_TAG, "deadline, inserted by DatabaseHelper: " + deadline);
         contentValues.put(TODOLIST_ITEM_CATEGORY, toDoListItem.getCategory());
         contentValues.put(TODOLIST_ITEM_COMPLETE_STATUS, toDoListItem.getCompleteStatusCode());
         db.insert(TODOLIST_TABLE_NAME, null, contentValues);
+        return true;
+    }
+
+    public boolean updateToDoListItem(ToDoItemModel toDoItem) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TODOLIST_ITEM_TITLE, toDoItem.getTitle());
+        contentValues.put(TODOLIST_ITEM_DESCRIPTION, toDoItem.getDetailDescription());
+        contentValues.put(TODOLIST_ITEM_PRIORITY, toDoItem.getPriority());
+        Long toDoItemDateAndTimeCreatedLongType = toDoItem.getItemCreatedDateAndTime();
+        Log.v(LOG_TAG, "itemCreatedDateAndTimeLongType, updated by DatabaseHelper: " + toDoItemDateAndTimeCreatedLongType);
+        String toDoItemDateAndTimeCreated = Long.toString(toDoItemDateAndTimeCreatedLongType);
+        contentValues.put(TODOLIST_ITEM_TIME_DATE_CREATED, toDoItemDateAndTimeCreated);
+        Log.v(LOG_TAG, "itemCreatedDateAndTime, updated by DatabaseHelper: " + toDoItemDateAndTimeCreated);
+        String deadline = Long.toString(toDoItem.getToDoItemDeadline());
+        contentValues.put(TODOLIST_ITEM_DEADLINE, deadline);
+        Log.v(LOG_TAG, "deadline, updated by DatabaseHelper: " + deadline);
+        contentValues.put(TODOLIST_ITEM_CATEGORY, toDoItem.getCategory());
+        contentValues.put(TODOLIST_ITEM_COMPLETE_STATUS, toDoItem.getCompleteStatusCode());
+        db.update(TODOLIST_TABLE_NAME, contentValues,
+                TODOLIST_ITEM_TITLE + " = ? AND " + TODOLIST_ITEM_TIME_DATE_CREATED + " = ? ",
+                new String[]{toDoItem.getTitle(), GeneralHelper.formatToString(toDoItem.getItemCreatedDateAndTime())});
         return true;
     }
 
@@ -104,6 +126,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<ToDoItemModel> getAllToDoItemsAsArrayList() {
+        Log.v(LOG_TAG, "getAllToDoItemsAsArrayList(), dbHelper executed.");
         ArrayList<ToDoItemModel> toDoListItemsTitlePriorityDeadlineArrayList = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -117,9 +140,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             int priority = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_PRIORITY));
             String description = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_DESCRIPTION));
             long itemCreatedDateAndTime = Long.parseLong(cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_TIME_DATE_CREATED)));
-            Log.v(LOG_TAG, "itemCreatedDateAndTime fetched the DatabaseHelper: " + itemCreatedDateAndTime);
+            Log.v(LOG_TAG, "itemCreatedDateAndTime, fetched the DatabaseHelper: " + itemCreatedDateAndTime);
             long deadline = Long.parseLong(cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_DEADLINE)));
-            Log.v(LOG_TAG, "deadline fetched the DatabaseHelper: " + deadline);
+            Log.v(LOG_TAG, "deadline, fetched the DatabaseHelper: " + deadline);
             int category = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_CATEGORY));
             int completionStatusCode = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_COMPLETE_STATUS));
             ToDoItemModel toDoListItem = new ToDoItemModel(title, priority, description, itemCreatedDateAndTime, deadline, category, completionStatusCode);
@@ -214,6 +237,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     itemDateAndTimeCreated, deadline, category, completionStatusCode);
             toDoItemsArrayListSortByTitle.add(toDoListItem);
             cursor.moveToNext();
+        }
+
+        for (int i = 0; i < toDoItemsArrayListSortByTitle.size(); i++) {
+            Log.v(LOG_TAG, " toDoItemsArrayListSortByTitle(), dbHelper executed: " + toDoItemsArrayListSortByTitle.get(i).getTitle());
         }
 
         return toDoItemsArrayListSortByTitle;

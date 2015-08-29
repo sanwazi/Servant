@@ -1,5 +1,7 @@
 package com.example.tek.first.servant.todolist.helper;
 
+import com.example.tek.first.servant.R;
+
 public abstract class GeneralConstants {
 
     public static final String DESCRIPTION_IDENTIFIER = "descriptionIdentifier";
@@ -20,4 +22,10 @@ public abstract class GeneralConstants {
 
     public static final String TO_DO_ITEM_IDENTIFIER = "toDoItemIdentifier";
     public static final String SAVEINSTANCESTATE_TODOITEMS_ARRAYLIST_IDENTIFIER = "toDoItemIdentifier";
+
+    public static final int[] PRIORITY_LEVEL_COLOR
+            = {R.color.priority_level1, R.color.priority_level2, R.color.priority_level3,
+            R.color.priority_level4, R.color.priority_level5, R.color.priority_level6,
+            R.color.priority_level7, R.color.priority_level8, R.color.priority_level9,
+            R.color.priority_level10};
 }

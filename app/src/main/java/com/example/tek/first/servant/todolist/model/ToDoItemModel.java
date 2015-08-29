@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.example.tek.first.servant.todolist.helper.GeneralHelper;
 import com.example.tek.first.servant.todolist.helper.GeneralHelper.CompletionStatus;
 
 public class ToDoItemModel implements Parcelable {
@@ -98,10 +99,6 @@ public class ToDoItemModel implements Parcelable {
         this.completionStatus = completionStatus;
     }
 
-    public int getCompleteStatusCode() {
-        return completionStatus.getStatusCode();
-    }
-
     public void setCompleteStatusCode(int statusCode) {
         completionStatus.setStatusCode(statusCode);
     }
@@ -112,6 +109,10 @@ public class ToDoItemModel implements Parcelable {
 
     public int getCategory() {
         return category;
+    }
+
+    public int getCompleteStatusCode() {
+        return completionStatus.getStatusCode();
     }
 
     public void setPriority(int priority) {
@@ -166,6 +167,7 @@ public class ToDoItemModel implements Parcelable {
         dest.writeString(detailDescription);
         dest.writeInt(category);
         dest.writeLong(itemCreatedDateAndTime);
+        Log.v(LOG_TAG, "itemCreatedDateAndTime, writeToParcel(Parcel dest, int flags), ToDoItemModel: " + GeneralHelper.formatToString(itemCreatedDateAndTime));
         dest.writeLong(toDoItemDeadline);
         dest.writeValue(completionStatus);
     }
@@ -174,9 +176,10 @@ public class ToDoItemModel implements Parcelable {
         title = in.readString();
         priority = in.readInt();
         detailDescription = in.readString();
-        itemCreatedDateAndTime = in.readLong();
-        toDoItemDeadline = in.readLong();
         category = in.readInt();
+        itemCreatedDateAndTime = in.readLong();
+        Log.v(LOG_TAG, "itemCreatedDateAndTime, in.readLong(), ToDoItemModel(Parcel in): " + GeneralHelper.formatToString(itemCreatedDateAndTime));
+        toDoItemDeadline = in.readLong();
         completionStatus = (CompletionStatus) in.readValue(CompletionStatus.class.getClassLoader());
     }
 

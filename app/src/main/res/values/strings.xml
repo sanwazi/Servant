@@ -54,4 +54,10 @@
         <item>Not Started</item>
         <item>All</item>
     </string-array>
+
+    <string-array name="todoitem_complete_status">
+        <item>Mark as incomplete</item>
+        <item>Mark as not started</item>
+        <item>Mark as complete</item>
+    </string-array>
 </resources>
