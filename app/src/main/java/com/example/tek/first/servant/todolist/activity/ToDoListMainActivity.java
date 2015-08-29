@@ -2,15 +2,12 @@ package com.example.tek.first.servant.todolist.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.FragmentManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.example.tek.first.servant.R;
@@ -48,7 +45,7 @@ public class ToDoListMainActivity extends Activity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_todolist);
+        setContentView(R.layout.todolist_main_activity);
 
         toDoItemsArrayList = new ArrayList<>();
         if (savedInstanceState != null) {

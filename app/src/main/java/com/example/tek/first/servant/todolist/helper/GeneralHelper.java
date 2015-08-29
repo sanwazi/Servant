@@ -95,4 +95,39 @@ public class GeneralHelper {
     public static String formatToString(int text) {
         return Integer.toString(text);
     }
+
+    public static String parseDateAndTimeToString(Long dateAndTime) {
+        String dateAndTimeString = formatToString(dateAndTime);
+        String year = dateAndTimeString.substring(0, 4);
+        String monthInString = dateAndTimeString.substring(4, 6);
+        String day = dateAndTimeString.substring(6, 8);
+        String hourOfDay = dateAndTimeString.substring(8, 10);
+        String minuteOfHour = dateAndTimeString.substring(10, 12);
+        int monthInInt = Integer.parseInt(monthInString);
+        String[] monthOptions = {
+                "Jan ", "Feb ", "Mar ", "Apr ",
+                "May ", "Jun ", "Jul ", "Aug ",
+                "Sep ", "Oct ", "Nov ", "Dec "};
+        String dateAndTimeFormatted = hourOfDay + ":" + minuteOfHour + ", "
+                + monthOptions[monthInInt - 1] + day + ", " + year;
+        Log.v(LOG_TAG, "dateAndTimeFormatted, GeneralHelper: " + dateAndTimeFormatted);
+        return dateAndTimeFormatted;
+    }
+
+    public static String parseDateAndTimeToString(String dateAndTimeString) {
+        String year = dateAndTimeString.substring(0, 4);
+        String monthInString = dateAndTimeString.substring(4, 6);
+        String day = dateAndTimeString.substring(6, 8);
+        String hourOfDay = dateAndTimeString.substring(8, 10);
+        String minuteOfHour = dateAndTimeString.substring(10, 12);
+        int monthInInt = Integer.parseInt(monthInString);
+        String[] monthOptions = {
+                "Jan ", "Feb ", "Mar ", "Apr ",
+                "May ", "Jun ", "Jul ", "Aug ",
+                "Sep ", "Oct ", "Nov ", "Dec "};
+        String dateAndTimeFormatted = hourOfDay + ":" + minuteOfHour + ", "
+                + monthOptions[monthInInt - 1] + day + ", " + year;
+        Log.v(LOG_TAG, "dateAndTimeFormatted, GeneralHelper: " + dateAndTimeFormatted);
+        return dateAndTimeFormatted;
+    }
 }

@@ -25,7 +25,7 @@ import com.example.tek.first.servant.todolist.model.ToDoItemModel;
 public class ToDoItemDetailsActivity extends Activity
         implements DetailedNewToDoItemDialogFragment.OnNewItemAddedListener,
         TimePickerDialog.OnTimeSetListener,
-        DatePickerDialogFragment.DatePickerDialogListener{
+        DatePickerDialogFragment.DatePickerDialogListener {
 
     private static String LOG_TAG = ToDoItemDetailsActivity.class.getSimpleName();
 
@@ -46,7 +46,7 @@ public class ToDoItemDetailsActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.todolist_todoitem_detail_activity);
+        setContentView(R.layout.todolist_todoitem_details_activity);
 
         dbHelper = new DatabaseHelper(ToDoItemDetailsActivity.this);
 
@@ -142,13 +142,16 @@ public class ToDoItemDetailsActivity extends Activity
 
     private void refreshToDoItemDetailsPage(ToDoItemModel toDoItem) {
         titleTextView.setText(toDoItem.getTitle());
-        deadlineTextView.setText("Deadline: " + GeneralHelper.formatToString(toDoItem.getToDoItemDeadline()));
-        Log.v(LOG_TAG, "refreshToDoItemDetailsPage(), ToDoItemDetailsActivity: " + Long.toString(toDoItem.getToDoItemDeadline()));
+        String deadline = GeneralHelper.parseDateAndTimeToString(toDoItem.getToDoItemDeadline());
+        deadlineTextView.setText("Deadline: " + deadline);
+        Log.v(LOG_TAG, "deadline, refreshToDoItemDetailsPage(), ToDoItemDetailsActivity: " + deadline);
         descriptionTextView.setText(GeneralHelper.formatToString(toDoItem.getDetailDescription()));
         int priority = toDoItem.getPriority();
         priorityTextView.setText(GeneralHelper.formatToString(priority));
         priorityTextView.setBackgroundColor(GeneralConstants.PRIORITY_LEVEL_COLOR[priority]);
-        dateAndTimeCreatedTextView.setText("Time added: " + GeneralHelper.formatToString(toDoItem.getItemCreatedDateAndTime()));
+        String timeAdded = GeneralHelper.parseDateAndTimeToString(toDoItem.getItemCreatedDateAndTime());
+        Log.v(LOG_TAG, "timeAdded, refreshToDoItemDetailsPage(), ToDoItemDetailsActivity: " + timeAdded);
+        dateAndTimeCreatedTextView.setText("Time added: " + timeAdded);
     }
 
 
