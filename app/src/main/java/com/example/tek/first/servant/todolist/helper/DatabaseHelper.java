@@ -181,12 +181,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //    public int numberOfCompletedToDoItem() {
 //        SQLiteDatabase db = this.getReadableDatabase();
 //    }
-    public boolean deleteToDoItem(String title, Long dateAndTimeCreated) {
+    public boolean deleteToDoItem(ToDoItemModel toDoItem) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TODOLIST_TABLE_NAME,
                 TODOLIST_ITEM_TIME_DATE_CREATED + " =? AND " +
                         TODOLIST_ITEM_TITLE + " =?",
-                new String[]{dateAndTimeCreated.toString(), title});
+                new String[]{GeneralHelper.formatToString(toDoItem.getItemCreatedDateAndTime()), toDoItem.getTitle()});
         return true;
     }
 

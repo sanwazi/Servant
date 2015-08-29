@@ -111,9 +111,10 @@ public class ToDoItemDetailsActivity extends Activity {
                 alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dbHelper.deleteToDoItem(toDoItem.getTitle(), toDoItem.getItemCreatedDateAndTime());
+                        dbHelper.deleteToDoItem(toDoItem);
                         Toast.makeText(ToDoItemDetailsActivity.this, "ToDoItem: " + toDoItem.getTitle() + " deleted.", Toast.LENGTH_SHORT).show();
-
+                        Intent intent = new Intent(ToDoItemDetailsActivity.this, ToDoListMainActivity.class);
+                        startActivity(intent);
                     }
                 }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
