@@ -2,6 +2,7 @@ package com.example.tek.first.servant.todolist.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,15 +10,22 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.tek.first.servant.R;
+import com.example.tek.first.servant.todolist.fragment.dialog.DatePickerDialogFragment;
+import com.example.tek.first.servant.todolist.fragment.dialog.DetailedNewToDoItemDialogFragment;
 import com.example.tek.first.servant.todolist.helper.DatabaseHelper;
 import com.example.tek.first.servant.todolist.helper.GeneralConstants;
 import com.example.tek.first.servant.todolist.helper.GeneralHelper;
+import com.example.tek.first.servant.todolist.model.DateModel;
 import com.example.tek.first.servant.todolist.model.ToDoItemModel;
 
-public class ToDoItemDetailsActivity extends Activity {
+public class ToDoItemDetailsActivity extends Activity
+        implements DetailedNewToDoItemDialogFragment.OnNewItemAddedListener,
+        TimePickerDialog.OnTimeSetListener,
+        DatePickerDialogFragment.DatePickerDialogListener{
 
     private static String LOG_TAG = ToDoItemDetailsActivity.class.getSimpleName();
 
@@ -30,6 +38,8 @@ public class ToDoItemDetailsActivity extends Activity {
     private Button btnEdit;
     private Button btnMarkAsComplete;
     private Button btnDelete;
+
+    private ToDoItemModel editedToDoItem;
 
     private DatabaseHelper dbHelper;
 
@@ -61,6 +71,8 @@ public class ToDoItemDetailsActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Log.v(LOG_TAG, "ToDoItem: " + toDoItem.getTitle() + " will be edited");
+                DetailedNewToDoItemDialogFragment detailedNewToDoListItemDialog = new DetailedNewToDoItemDialogFragment();
+                detailedNewToDoListItemDialog.show(getFragmentManager(), "DetailedNewToDoItemDialogFragment");
             }
         });
 
@@ -140,4 +152,18 @@ public class ToDoItemDetailsActivity extends Activity {
     }
 
 
+    @Override
+    public void onDateSelected(DateModel dateSelected) {
+
+    }
+
+    @Override
+    public void onNewItemAdded(ToDoItemModel todoItem) {
+
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+    }
 }

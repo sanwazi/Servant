@@ -38,7 +38,7 @@ public class ToDoItemModel implements Parcelable {
         this.category = 0;
         this.completionStatus = CompletionStatus.NOTSTARTED;
     }
-
+    
     public ToDoItemModel(String title, Long currentTime) {
         this.title = title;
         this.priority = 1;

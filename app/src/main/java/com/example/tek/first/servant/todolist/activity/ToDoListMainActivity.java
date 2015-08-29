@@ -66,9 +66,7 @@ public class ToDoListMainActivity extends Activity
                 = (ToDoListDisplayFragment) fragmentManager.findFragmentById(R.id.todolist_displayfragment);
 
         toDoListCustomAdapter = new ToDoListCustomAdapter(ToDoListMainActivity.this, toDoItemsArrayList);
-//        Bundle bundle = new Bundle();
-//        bundle.putParcelableArrayList(GeneralConstants.TO_DO_ITEMS_ARRAYLIST_IDENTIFIER, toDoItemsArrayList);
-//        toDoListDisplayFragment.setArguments(bundle);
+
         toDoListDisplayFragment.setListAdapter(toDoListCustomAdapter);
     }
 
