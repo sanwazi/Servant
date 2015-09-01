@@ -39,7 +39,7 @@ public class ProcessJSON {
             String res_longitude = coordinate.getString("longitude");
             Double distance = Distance.getDistance(Double.parseDouble(now_latitude), Double.parseDouble(now_longitude), Double.parseDouble(res_latitude), Double.parseDouble(res_longitude));
             InfoCollection Info = new InfoCollection(name,rating,review_count,category_result,image_url,snippet_text,address
-                    ,phone_number,mobile_url,distance);
+                    ,phone_number,mobile_url,distance, Double.parseDouble(res_latitude), Double.parseDouble(res_longitude));
             result_Array.add(Info);
         }
     }

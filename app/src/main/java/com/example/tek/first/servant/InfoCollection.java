@@ -14,11 +14,13 @@ public class InfoCollection {
     private String phone_number;
     private String mobile_url;
     private double distance;
+    double latitude;
+    double longtitude;
     public InfoCollection(){
 
     }
 
-    public InfoCollection(String name, float rating, int number_comment, String category, String image_url, String snippet_text, String address, String phone_number, String mobile_url,double distance ) {
+    public InfoCollection(String name, float rating, int number_comment, String category, String image_url, String snippet_text, String address, String phone_number, String mobile_url,double distance,double latitude,double longtitude ) {
         this.name = name;
         this.rating = rating;
         this.number_comment = number_comment;
@@ -29,6 +31,8 @@ public class InfoCollection {
         this.phone_number = phone_number;
         this.mobile_url = mobile_url;
         this.distance = distance;
+        this.latitude = latitude;
+        this.longtitude=longtitude;
     }
 
     public String getName() {
@@ -109,5 +113,12 @@ public class InfoCollection {
 
     public void setDistance(double distance) {
         this.distance = distance;
+    }
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongtitude() {
+        return longtitude;
     }
 }
