@@ -1,11 +1,14 @@
 package com.example.tek.first.servant;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -81,7 +85,7 @@ public class SearchResultFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         sp = getActivity().getSharedPreferences("config", Context.MODE_PRIVATE);
-        final SharedPreferences.Editor editor=sp.edit();
+        final SharedPreferences.Editor editor = sp.edit();
         Intent intent = getActivity().getIntent();
         Bundle bundle = intent.getExtras();
 
@@ -91,12 +95,18 @@ public class SearchResultFragment extends Fragment {
             new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected Void doInBackground(Void... params) {
-                    Yelp yelp = Yelp.getYelp(getActivity());
-                    String food_json = yelp.search(search, location_search[0], location_search[1], "20");
-                    try {
-                        ProcessJSON.processJson(food_json, result_list);
-                    } catch (JSONException e) {
+                    if (!isOnline()) {
+                        Looper.prepare();
+                        Toast.makeText(getActivity(), "Network Error", Toast.LENGTH_LONG).show();
+                        Looper.loop();
+                    } else {
+                        try {
+                            Yelp yelp = Yelp.getYelp(getActivity());
+                            String food_json = yelp.search(search, location_search[0], location_search[1], "20");
+                            ProcessJSON.processJson(food_json, result_list);
+                        } catch (JSONException e) {
 
+                        }
                     }
                     copy.addAll(result_list);
                     return null;
@@ -116,12 +126,15 @@ public class SearchResultFragment extends Fragment {
                 new AsyncTask<Void, Void, Void>() {
                     @Override
                     protected Void doInBackground(Void... params) {
-                        Yelp yelp = Yelp.getYelp(getActivity());
-                        String food_json = yelp.search(searchagain, location_search[0], location_search[1], "20");
-                        try {
-                            ProcessJSON.processJson(food_json, result_list);
-                        } catch (JSONException e) {
-
+                        if (!isOnline()) {
+                            Toast.makeText(getActivity(), "Network Error", Toast.LENGTH_LONG).show();
+                        } else {
+                            try {
+                                Yelp yelp = Yelp.getYelp(getActivity());
+                                String food_json = yelp.search(searchagain, location_search[0], location_search[1], "20");
+                                ProcessJSON.processJson(food_json, result_list);
+                            } catch (JSONException e) {
+                            }
                         }
                         copy.clear();
                         copy.addAll(result_list);
@@ -165,21 +178,41 @@ public class SearchResultFragment extends Fragment {
                 break;
             case 1:
                 Collections.sort(result_list, comparator_distance);
-                listViewSearchResult.setAdapter(new CustomAdapter(SearchResultFragment.this,result_list));
+                listViewSearchResult.setAdapter(new CustomAdapter(SearchResultFragment.this, result_list));
                 editor.putInt("sort", 1);
                 editor.commit();
                 break;
             case 2:
-                Collections.sort(result_list,comparator_rating);
+                Collections.sort(result_list, comparator_rating);
                 listViewSearchResult.setAdapter(new CustomAdapter(SearchResultFragment.this, result_list));
-                editor.putInt("sort",2);
+                editor.putInt("sort", 2);
                 editor.commit();
                 break;
         }
     }
 
+    public boolean isOnline() {
+        boolean status = false;
+        try {
+            ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo netInfo = cm.getNetworkInfo(0);
+            if (netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED) {
+                status = true;
+            } else {
+                netInfo = cm.getNetworkInfo(1);
+                if (netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED)
+                    status = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return status;
+
+    }
+
     private void initialSort() {
-        int sort_method= sp.getInt("sort",0);
+        int sort_method = sp.getInt("sort", 0);
         switch (sort_method) {
             case 0:
                 spinner.setSelection(0);
@@ -193,7 +226,7 @@ public class SearchResultFragment extends Fragment {
             case 2:
                 spinner.setSelection(2);
                 Collections.sort(result_list, comparator_rating);
-                listViewSearchResult.setAdapter(new CustomAdapter(SearchResultFragment.this,result_list));
+                listViewSearchResult.setAdapter(new CustomAdapter(SearchResultFragment.this, result_list));
                 break;
         }
     }

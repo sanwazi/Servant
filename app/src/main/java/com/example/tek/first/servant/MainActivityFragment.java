@@ -1,14 +1,22 @@
 package com.example.tek.first.servant;
 
+import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.provider.Settings;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,6 +25,7 @@ import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -36,9 +45,32 @@ public class MainActivityFragment extends Fragment {
     double[] currentaddress = new double[2];
     protected LocationManager locationManager;
     protected LocationListener locationListener;
-
+    boolean refersh;
 
     public MainActivityFragment() {
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main_fragment, menu);
+        MenuItem item1 = menu.findItem(R.id.action_refresh);
+        item1.setIcon(R.drawable.refresh);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_refresh) {
+            initInfo();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -74,25 +106,12 @@ public class MainActivityFragment extends Fragment {
                 th.getViewTreeObserver().removeOnTouchModeChangeListener(th);
             }
         });
-
-
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        if (locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) != null) {
-            currentaddress[0] = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude();
-            currentaddress[1] = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude();
-
-        } else if (locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) != null) {
-            currentaddress[0] = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLatitude();
-            currentaddress[1] = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLongitude();
-        } else if (locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER) != null) {
-            currentaddress[0] = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLatitude();
-            currentaddress[1] = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLongitude();
-        }
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 currentaddress[0] = location.getLatitude();
                 currentaddress[1] = location.getLongitude();
+                // initData();
             }
 
             @Override
@@ -110,42 +129,6 @@ public class MainActivityFragment extends Fragment {
 
             }
         };
-        try {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, locationListener);
-            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 1000, 1, locationListener);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println(currentaddress[0]);
-        System.out.println(currentaddress[1]);
-        //****************************************//
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-                Yelp yelp = Yelp.getYelp(getActivity());
-                String food_json = yelp.search("taco", currentaddress[0], currentaddress[1], "5");
-                String entertainment_json = yelp.search("bar", currentaddress[0], currentaddress[1], "5");
-                String shopping_json = yelp.search("Macy's", currentaddress[0], currentaddress[1], "5");
-                try {
-                    ProcessJSON.processJson(food_json, food_list);
-                    ProcessJSON.processJson(entertainment_json, entertainment_list);
-                    ProcessJSON.processJson(shopping_json, shopping_list);
-
-                } catch (JSONException e) {
-
-                }
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                listViewFood.setAdapter(new CustomAdapter(MainActivityFragment.this, food_list));
-                listViewEntertainment.setAdapter(new CustomAdapter(MainActivityFragment.this, entertainment_list));
-                listViewShopping.setAdapter(new CustomAdapter(MainActivityFragment.this, shopping_list));
-            }
-        }.execute();
 
 
         btnSearch.setOnClickListener(new View.OnClickListener() {
@@ -160,7 +143,130 @@ public class MainActivityFragment extends Fragment {
             }
         });
 
-
         return view;
+    }
+
+    private void initGPS() {
+
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        if (!locationManager
+                .isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            refersh = true;
+            AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+            dialog.setMessage("Please open GPS to locate your positon");
+            dialog.setPositiveButton("OK",
+                    new android.content.DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            Intent intent = new Intent(
+                                    Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivityForResult(intent, 0);
+                        }
+                    });
+            dialog.setNeutralButton("cancel", new android.content.DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+                    arg0.dismiss();
+                }
+            });
+            dialog.show();
+        } else {
+            updateLocation();
+            refersh = false;
+        }
+    }
+
+
+    private void updateLocation() {
+        try {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, locationListener);
+            if (locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) != null) {
+                currentaddress[0] = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude();
+                currentaddress[1] = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude();
+            } else if (locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) != null) {
+                currentaddress[0] = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLatitude();
+                currentaddress[1] = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLongitude();
+            }
+        } catch (Exception e) {
+
+        }
+
+    }
+
+    private void initInfo(){
+        if (!isOnline()) {
+            Toast.makeText(getActivity(), "Network Error", Toast.LENGTH_LONG).show();
+        } else {
+            initGPS();
+            updateLocation();
+            initData();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        initInfo();
+
+    }
+
+    public void initData() {
+
+        food_list.clear();
+        entertainment_list.clear();
+        shopping_list.clear();
+        //****************************************//
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                if (currentaddress[0] == 0) {
+
+                } else {
+                    Yelp yelp = Yelp.getYelp(getActivity());
+                    try {
+                        String food_json = yelp.search("taco", currentaddress[0], currentaddress[1], "5");
+                        String entertainment_json = yelp.search("bar", currentaddress[0], currentaddress[1], "5");
+                        String shopping_json = yelp.search("Macy's", currentaddress[0], currentaddress[1], "5");
+                        ProcessJSON.processJson(food_json, food_list);
+                        ProcessJSON.processJson(entertainment_json, entertainment_list);
+                        ProcessJSON.processJson(shopping_json, shopping_list);
+
+                    } catch (JSONException e) {
+                    }
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                listViewFood.setAdapter(new CustomAdapter(MainActivityFragment.this, food_list));
+                listViewEntertainment.setAdapter(new CustomAdapter(MainActivityFragment.this, entertainment_list));
+                listViewShopping.setAdapter(new CustomAdapter(MainActivityFragment.this, shopping_list));
+            }
+        }.execute();
+
+
+    }
+
+    public boolean isOnline() {
+        boolean status = false;
+        try {
+            ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo netInfo = cm.getNetworkInfo(0);
+            if (netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED) {
+                status = true;
+            } else {
+                netInfo = cm.getNetworkInfo(1);
+                if (netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED)
+                    status = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return status;
+
     }
 }
