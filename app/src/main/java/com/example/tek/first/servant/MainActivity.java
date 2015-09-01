@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         username_editText = (EditText) findViewById(R.id.username_editText_main);
         password_editText = (EditText) findViewById(R.id.password_editText_main);
+
     }
 
 
